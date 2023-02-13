@@ -352,12 +352,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/CKS/">
-                                <span class="chip bg-color">CKS</span>
-                            </a>
-                        
                             <a href="/tags/CKA/">
                                 <span class="chip bg-color">CKA</span>
+                            </a>
+                        
+                            <a href="/tags/CKS/">
+                                <span class="chip bg-color">CKS</span>
                             </a>
                         
                     </div>
@@ -429,6 +429,7 @@
 <h4 id="2、使用命令补全"><a href="#2、使用命令补全" class="headerlink" title="2、使用命令补全"></a>2、使用命令补全</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">source</span> /usr/share/bash-completion/bash_completion 
 <span class="token builtin class-name">source</span> <span class="token operator">&lt;</span><span class="token punctuation">(</span>kubectl completion <span class="token function">bash</span><span class="token punctuation">)</span>
 <span class="token builtin class-name">echo</span> <span class="token string">"source &lt;(kubectl completion bash)"</span> <span class="token operator">>></span> ~/.bashrc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="3、使用别名"><a href="#3、使用别名" class="headerlink" title="3、使用别名"></a>3、使用别名</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">vim</span> ~/.bashrc
 <span class="token comment"># 添加如下内容</span>
 <span class="token builtin class-name">alias</span> <span class="token assign-left variable">k</span><span class="token operator">=</span><span class="token string">'kubectl'</span>
@@ -436,25 +437,34 @@
 <span class="token builtin class-name">alias</span> <span class="token assign-left variable">kgs</span><span class="token operator">=</span><span class="token string">'kubectl get svc'</span>
 
 <span class="token comment"># source ~/.bashrc</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="4、环境检查"><a href="#4、环境检查" class="headerlink" title="4、环境检查"></a>4、环境检查</h4><p>集群版本</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>集群整体状态</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl cluster-info<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>更多集群信息</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl cluster-info dump<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>集群组件状态：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl get componentstatus<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>集群主控节点判断(ROLES里是否有master信息)：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl get nodes<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>集群安装方式判断(kubeadm还是二进制)</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看/etc/kubernetes/manifests 里有没有etcd、kube-apiserver.yaml、kube-controller-manager.yaml、schedule.yaml</span>
 <span class="token comment"># 如果有这4个文件，则是以kubeadm方式安装，实现方式为静态Pod方式实现</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>集群当前上下文</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config current-context<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>集群上下文切换</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config set-context gce <span class="token parameter variable">--user</span><span class="token operator">=</span>cluster-admin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>5、考试环境中一定要留意<strong>k8s环境，尤其是主机名和用户</strong>，默认可以使用ssh进入nod，进入node做完题目后记得退出exit</p>
-<p>6、养成使用—dry-run、kubectl apply -f、kubectl delete -f的习惯，同时将答案和yaml写入到文件里，方便根据命令模板修改yaml，以及后面检查答案时重做题目</p>
+<p>6、养成使用–dry-run、kubectl apply -f、kubectl delete -f的习惯，同时将答案和yaml写入到文件里，方便根据命令模板修改yaml，以及后面检查答案时重做题目</p>
 
                 
             </div>
@@ -519,12 +529,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/CKS/">
-                                    <span class="chip bg-color">CKS</span>
-                                </a>
-                            
                                 <a href="/tags/CKA/">
                                     <span class="chip bg-color">CKA</span>
+                                </a>
+                            
+                                <a href="/tags/CKS/">
+                                    <span class="chip bg-color">CKS</span>
                                 </a>
                             
                         </div>
@@ -689,12 +699,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/CKS/">
-                        <span class="chip bg-color">CKS</span>
-                    </a>
-                    
                     <a href="/tags/CKA/">
                         <span class="chip bg-color">CKA</span>
+                    </a>
+                    
+                    <a href="/tags/CKS/">
+                        <span class="chip bg-color">CKS</span>
                     </a>
                     
                 </div>

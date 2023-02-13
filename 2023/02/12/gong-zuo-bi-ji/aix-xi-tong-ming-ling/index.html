@@ -429,22 +429,26 @@ mkuser id=&#39;3001&#39; admin=&#39;false&#39; pgrp=&#39;osquery&#39; ">
 <h4 id="2、新增用户"><a href="#2、新增用户" class="headerlink" title="2、新增用户"></a><strong>2、新增用户</strong></h4><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">mkgroup <span class="token operator">-</span><span class="token string">'A'</span> id=<span class="token string">'3001'</span> osquery
 mkuser id=<span class="token string">'3001'</span> admin=<span class="token string">'false'</span> pgrp=<span class="token string">'osquery'</span> home=<span class="token string">'/home/osquery'</span> osquery
 <span class="token function">echo</span> osquery:Query168 <span class="token punctuation">|</span> chpasswd <span class="token operator">-</span>c <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="3、修改主机名"><a href="#3、修改主机名" class="headerlink" title="3、修改主机名"></a><strong>3、修改主机名</strong></h4><p>修改主机名暂时生效：<br><code>hostname YZH-SC-GRWY-DB1</code><br>永久生效<br><code>smit hostname</code></p>
-<h4 id="4、解压缩"><a href="#4、解压缩" class="headerlink" title="4、解压缩"></a><strong>4、解压缩</strong></h4><p>压缩<br><code>tar -cvf new.tar new</code><br><code>tar -cvf new.tar /new</code> 绝对路径压缩，解压后，直接绝对路径解压。<br><code>tar -cvf /app/nc63/nc63_20140217.tar  -X /app/nc63/exclude   /app/nc63</code><br>exclude里的内容是你要排除的目录。比如要排除/app/nc63/index这个目录，在exclude文件里添加/app/nc63/index。</p>
+<h4 id="4、解压缩"><a href="#4、解压缩" class="headerlink" title="4、解压缩"></a><strong>4、解压缩</strong></h4><p>压缩<br><code>tar -cvf new.tar new</code><br><code>tar -cvf new.tar /new</code> 绝对路径压缩，解压后，直接绝对路径解压。<br><code>tar -cvf /app/nc63/nc63_20140217.tar  -X /app/nc63/exclude   /app/nc63</code><br>exclude里的内容是你要排除的目录。比如要排除&#x2F;app&#x2F;nc63&#x2F;index这个目录，在exclude文件里添加&#x2F;app&#x2F;nc63&#x2F;index。</p>
 <p>解压</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">gunzip <span class="token parameter variable">-df</span> <span class="token number">7.0</span>.0.13-WS-UPDI-AixPPC64.tar.gz
 <span class="token function">tar</span> <span class="token parameter variable">-xvf</span> <span class="token number">7.0</span>.0.13-WS-UPDI-AixPPC64.tar<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="5、查看网络信息"><a href="#5、查看网络信息" class="headerlink" title="5、查看网络信息"></a><strong>5、查看网络信息</strong></h4><p><code>netstat -rn</code> 查看路由情况<br><code>netstat -ni</code>查看网口，对应IP，对应mac地址。<br><code>smit route</code> 添加路由信息，可以在线添加</p>
-<h4 id="6、查看机器信息"><a href="#6、查看机器信息" class="headerlink" title="6、查看机器信息"></a><strong>6、查看机器信息</strong></h4><p>查看aix硬件信息：<br><code>prtconf |more</code><br>序列号：<br><code>prtconf |grep &quot;Machine Serial Number&quot;</code><br>查看机器型号：<br><code>prtconf |grep &quot;System Model&quot;</code></p>
+
+<h4 id="5、查看网络信息"><a href="#5、查看网络信息" class="headerlink" title="5、查看网络信息"></a><strong>5、查看网络信息</strong></h4><p><code>netstat -rn</code> 查看路由情况<br><code>netstat -ni </code>查看网口，对应IP，对应mac地址。<br><code>smit route</code> 添加路由信息，可以在线添加</p>
+<h4 id="6、查看机器信息"><a href="#6、查看机器信息" class="headerlink" title="6、查看机器信息"></a><strong>6、查看机器信息</strong></h4><p>查看aix硬件信息：<br><code>prtconf |more </code><br>序列号：<br><code>prtconf |grep &quot;Machine Serial Number&quot;</code><br>查看机器型号：<br><code>prtconf |grep &quot;System Model&quot;</code></p>
 <p>上面两个写在一起：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">YZHCM3DB/<span class="token comment">#prtconf | egrep "Machine|^System"</span>
 System Model: IBM,8202-E4D
 Machine Serial Number: 849663V<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>CPU个数：<br><code>lsdev -Cc processor</code></p>
 <h4 id="7、hdisk相关操作"><a href="#7、hdisk相关操作" class="headerlink" title="7、hdisk相关操作"></a><strong>7、hdisk相关操作</strong></h4><p>设置pv的id号<br><code>chdev -l hdisk6 -a pv=yes</code><br>查看磁盘详细信息</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">lscfg <span class="token operator">-</span>vpl hdisk6 
 lsattr <span class="token operator">-</span>El hdisk6<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>查看网卡MAC地址<br><code>lscfg -vpl en*</code><br>查看磁盘大小<br><code>bootinfo -s hdisk6</code></p>
+
+<p>查看网卡MAC地址<br><code>lscfg -vpl en* </code><br>查看磁盘大小<br><code>bootinfo -s hdisk6</code></p>
 <h4 id="8、增加空间"><a href="#8、增加空间" class="headerlink" title="8、增加空间"></a><strong>8、增加空间</strong></h4><p>只针对本地文件系统。<br><code>chfs -a size=+2G /home</code></p>
 <h4 id="9、操作系统基本信息"><a href="#9、操作系统基本信息" class="headerlink" title="9、操作系统基本信息"></a><strong>9、操作系统基本信息</strong></h4><p>查看系统启动项<br><code>bootlist -m normal -o</code></p>
 <p>添加一个启动项</p>
@@ -452,11 +456,13 @@ lsattr <span class="token operator">-</span>El hdisk6<span aria-hidden="true" cl
 <p>查看操作系统位数<br><code>bootinfo -K</code></p>
 <p>【vi整体替换字符串】<br>文件中某个字符集体替换，old为你要替换的字符串，new为你要替换成的字符串<br><strong>vi test.sh</strong></p>
 <pre class="line-numbers language-none"><code class="language-none">:1,$s&#x2F;old&#x2F;new&#x2F;g<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>【pv、vg、lvm、fs操作】<br><code>smit vg</code>可以添加，删除一个vg 添加删除pv盘，<br><code>smit cl_vg</code> 如果HA集群，则加cl_ ，后面的命令也是一样需要增加cl。</p>
+
+<p>【pv、vg、lvm、fs操作】<br><code>smit vg </code>可以添加，删除一个vg 添加删除pv盘，<br><code>smit cl_vg</code> 如果HA集群，则加cl_ ，后面的命令也是一样需要增加cl。</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">smit lvm 
 smit cl_lvm
 smit fs
 smit cl_fs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>其它一些常见命令</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">lsvg  <span class="token comment"># 显示所有vg</span>
 lspv  <span class="token comment"># 显示所有pv</span>
@@ -468,11 +474,13 @@ lslv lvname  <span class="token comment"># 查看一个lv的详细信息。</spa
 lsvg sharevg  <span class="token comment"># 查看sharevg详细信息</span>
 lsvg <span class="token operator">-</span>p edp3vg  <span class="token comment"># 查看vg的pv空间使用情况。</span>
 lsvg <span class="token operator">-</span>l rootvg  <span class="token comment"># 可以查看rootvg的所有lvm信息</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="10、VG信息查看"><a href="#10、VG信息查看" class="headerlink" title="10、VG信息查看"></a><strong>10、VG信息查看</strong></h4><p>HA集群中，rootvg、datavg通常为本地磁盘，涉及到sharexxvg的，通常都是HA双机的共享vg。</p>
 <p>vg类型：</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">Add an Original Volume <span class="token function">Group</span>
 Add a Big Volume <span class="token function">Group</span>
 Add a Scalable Volume <span class="token function">Group</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>不同类型的vg 磁盘属性信息占用的pp数量不一样  <code>Scalable &gt; Big &gt; Original</code><br>正常建立vg，选择Big类型就可以</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">VOLUME <span class="token function">GROUP</span>:       rootvg                   VG IDENTIFIER:  00f91d9e00004c0000000169a6804cd3
 VG STATE:           active                   PP SIZE:        512 megabyte<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
@@ -494,16 +502,19 @@ LV NAME             <span class="token function">TYPE</span>       LPs     PPs  
 waslv               jfs2       20      20      1    open/syncd    <span class="token operator">/</span>was
 issdblv             jfs2       200     200     1    open/syncd    <span class="token operator">/</span>issdb
 db2loglv            jfs2       40      40      1    open/syncd    <span class="token operator">/</span>db2log <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="11、修复目录"><a href="#11、修复目录" class="headerlink" title="11、修复目录"></a><strong>11、修复目录</strong></h4><p><code>fuser -kxuc /aaa</code>  目录 杀掉所有使用到/aaa的目录 进程。<br><code>umount /aaa</code> 卸载一下<br><code>fsck /aaa</code> 修复该目录。</p>
-<h4 id="12、查看某个服务"><a href="#12、查看某个服务" class="headerlink" title="12、查看某个服务"></a><strong>12、查看某个服务</strong></h4><p>l<code>ssrc -s sshd</code>查看sshd服务<br>启停</p>
+
+<h4 id="11、修复目录"><a href="#11、修复目录" class="headerlink" title="11、修复目录"></a><strong>11、修复目录</strong></h4><p><code>fuser -kxuc /aaa</code>  目录 杀掉所有使用到&#x2F;aaa的目录 进程。<br><code>umount /aaa</code> 卸载一下<br><code>fsck /aaa</code> 修复该目录。</p>
+<h4 id="12、查看某个服务"><a href="#12、查看某个服务" class="headerlink" title="12、查看某个服务"></a><strong>12、查看某个服务</strong></h4><p>l<code>ssrc -s sshd </code>查看sshd服务<br>启停</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">stopsrc <span class="token operator">-</span>s sshd
 startsrc <span class="token operator">-</span>s sshd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <h4 id="13、删除当前用户下所有进程"><a href="#13、删除当前用户下所有进程" class="headerlink" title="13、删除当前用户下所有进程"></a><strong>13、删除当前用户下所有进程</strong></h4><p>例如was<br><code>su - was</code><br>当前用户下  注意：一定是当前用户<br><code>kill -9 -1</code></p>
-<h4 id="14、删除网卡及其它"><a href="#14、删除网卡及其它" class="headerlink" title="14、删除网卡及其它"></a><strong>14、删除网卡及其它</strong></h4><p><code>smit  inet</code> 删除一个tcpip，选择需要删除的网卡。<br><code>cfgmgr</code>重新扫描网卡</p>
-<p>【其他系统命令】<br>格式化磁盘<br><code>dd if=/dev/zero of=/dev/hdisk3  bs=1M count=2000</code><br><code>ls -lrt</code>  按时间排序<br><code>ls -lS</code>按文件大小排序</p>
+<h4 id="14、删除网卡及其它"><a href="#14、删除网卡及其它" class="headerlink" title="14、删除网卡及其它"></a><strong>14、删除网卡及其它</strong></h4><p><code>smit  inet</code> 删除一个tcpip，选择需要删除的网卡。<br><code>cfgmgr </code>重新扫描网卡</p>
+<p>【其他系统命令】<br>格式化磁盘<br><code>dd if=/dev/zero of=/dev/hdisk3  bs=1M count=2000</code><br><code>ls -lrt</code>  按时间排序<br><code>ls -lS </code>按文件大小排序</p>
 <p>mount的时候出现 </p>
 <pre class="line-numbers language-none"><code class="language-none">Connot mount guarded filesystem.
 The filesystem is potentially mounted on another node<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>可以通过<br><code>mount -o noguard  xxx</code> 对文件系统进行<code>mount</code></p>
 <h4 id="15、更换AIX本地镜像硬盘"><a href="#15、更换AIX本地镜像硬盘" class="headerlink" title="15、更换AIX本地镜像硬盘"></a><strong>15、更换AIX本地镜像硬盘</strong></h4><p>以rootvg为例，如需要更换rootvg中的hdisk1硬盘，以下操作均用root用户进行：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token number">1</span>. 去除rootvg的镜像<span class="token punctuation">(</span>均用root用户<span class="token punctuation">)</span>：unmirrorvg rootvg hdisk1
@@ -516,16 +527,20 @@ The filesystem is potentially mounted on another node<span aria-hidden="true" cl
 <span class="token number">8</span>. 添加启动信息boot image到新加磁盘hdisk0，bosboot –ad /dev/hdisk1
 <span class="token number">9</span>. 修改启动顺序：bootlist –m normal hdisk0 hdisk1
 <span class="token number">10</span>. 检查启动顺序：bootlist <span class="token parameter variable">-m</span> normal <span class="token parameter variable">-o</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="16、xmanager图形化界面打不开"><a href="#16、xmanager图形化界面打不开" class="headerlink" title="16、xmanager图形化界面打不开"></a><strong>16、xmanager图形化界面打不开</strong></h4><p>安装X11<br>lslpp -l|grep X11|wc -l 142 个表示安装全了。如果没有，安装一下。<br>找一个对应操作系统的安装介质，在ppc中smit installp 选择dt这个包，回车安装即可。<br>执行/etc/rc.dt &amp;完成即可。<br>修改配置信息 </p>
+
+<h4 id="16、xmanager图形化界面打不开"><a href="#16、xmanager图形化界面打不开" class="headerlink" title="16、xmanager图形化界面打不开"></a><strong>16、xmanager图形化界面打不开</strong></h4><p>安装X11<br>lslpp -l|grep X11|wc -l 142 个表示安装全了。如果没有，安装一下。<br>找一个对应操作系统的安装介质，在ppc中smit installp 选择dt这个包，回车安装即可。<br>执行&#x2F;etc&#x2F;rc.dt &amp;完成即可。<br>修改配置信息 </p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token operator">/</span>etc/ssh/ssh_config
 ForwardX11 yes 
 <span class="token operator">/</span>etc/ssh/sshd_config
 X11Forwarding yes <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>重启sshd</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">stopsrc <span class="token operator">-</span>s sshd
 startsrc <span class="token operator">-</span>s sshd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>然后用xmanage 或者xstart连接。<br>如果出现 <strong>X11TransSocketINETConnect() can’t get address for localhost</strong> 则<br>在<code>/etc/hosts</code>中把localhost加上 </p>
+
+<p>然后用xmanage 或者xstart连接。<br>如果出现 <strong>X11TransSocketINETConnect() can’t get address for localhost</strong> 则<br>在<code> /etc/hosts</code>中把localhost加上 </p>
 <pre class="line-numbers language-none"><code class="language-none">127.0.0.1 loopback localhost # loopback (lo0) name&#x2F;address ::1 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h4 id="17、消除操作系统亮灯详细步骤"><a href="#17、消除操作系统亮灯详细步骤" class="headerlink" title="17、消除操作系统亮灯详细步骤"></a><strong>17、消除操作系统亮灯详细步骤</strong></h4><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">1<span class="token punctuation">.</span>以root用户身份登录进入系统； 
 2<span class="token punctuation">.</span>在命令行输入“diag”命令，进入下一级菜单<span class="token punctuation">;</span> 
 3<span class="token punctuation">.</span>选择<span class="token string">"Task Selection(Diagnostics,Advanced Diagnostics,Service Aids,etc.)"</span>进入下一级菜单<span class="token punctuation">;</span> 
@@ -533,19 +548,25 @@ startsrc <span class="token operator">-</span>s sshd<span aria-hidden="true" cla
 5<span class="token punctuation">.</span>回车选择 <span class="token string">"Set System Attention Indicator to NORMAL"</span>，前面出现加号 
 6<span class="token punctuation">.</span>按F7或者ESC+7 提交，告警灯应该可以消除 
 7<span class="token punctuation">.</span>执行完毕退出诊断<span class="token punctuation">,</span>新出现的界面最上面会出现“REPAIR ACTION COMPLETED”的字样，报警灯将熄灭<span class="token punctuation">,</span>恢复正常<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="18、小机硬盘报修收集snap日志"><a href="#18、小机硬盘报修收集snap日志" class="headerlink" title="18、小机硬盘报修收集snap日志"></a><strong>18、小机硬盘报修收集snap日志</strong></h4><p>1)  <code>snap -r</code><br>A)如果以前未做过snap,系统会报错说明没有可清理的内容,显示<strong>“nothing to clean up”</strong><br>B)如果以前做过snap，显示Do you want me to remove these directories (y/n)?回答<strong>“y”</strong><br>2) <code>snap -gc</code><br>完成后,通过ftp取得<strong>/tmp/ibmsupt/snap.pax.*</strong> 文件 <strong>(snap.pax.Z</strong> 或者<strong>snap.tar.Z</strong>)</p>
-<h4 id="19、AIX分析IO高"><a href="#19、AIX分析IO高" class="headerlink" title="19、AIX分析IO高"></a><strong>19、AIX分析IO高</strong></h4><p>如果topas中看到系统的IO资源很高，可以利用iostat命令确认哪个文件系统io高。<br><code>iostat -F 2</code></p>
-<h4 id="20、小机切换VG信息不同步问题处理—在线"><a href="#20、小机切换VG信息不同步问题处理—在线" class="headerlink" title="20、小机切换VG信息不同步问题处理—在线"></a><strong>20、小机切换VG信息不同步问题处理—在线</strong></h4><p>在小机HA切换过程中，切换至备机出现备机的vg信息与主机信息不一致，则稳妥的操作步骤：<br>1、将备机的HA给停掉，smit clstop ，选择bring resource offline选项。<br>2、在主机这边将vg信息备份</p>
+
+<h4 id="18、小机硬盘报修收集snap日志"><a href="#18、小机硬盘报修收集snap日志" class="headerlink" title="18、小机硬盘报修收集snap日志"></a><strong>18、小机硬盘报修收集snap日志</strong></h4><ol>
+<li><code>snap -r </code><br>A)如果以前未做过snap,系统会报错说明没有可清理的内容,显示<strong>“nothing to clean up”</strong><br>B)如果以前做过snap，显示Do you want me to remove these directories (y&#x2F;n)?回答<strong>“y”</strong></li>
+<li><code> snap -gc</code><br>完成后,通过ftp取得**&#x2F;tmp&#x2F;ibmsupt&#x2F;snap.pax.*** 文件 <strong>(snap.pax.Z</strong> 或者<strong>snap.tar.Z</strong>)</li>
+</ol>
+<h4 id="19、AIX分析IO高"><a href="#19、AIX分析IO高" class="headerlink" title="19、AIX分析IO高"></a><strong>19、AIX分析IO高</strong></h4><p>如果topas中看到系统的IO资源很高，可以利用iostat命令确认哪个文件系统io高。<br><code>iostat -F 2 </code></p>
+<h4 id="20、小机切换VG信息不同步问题处理–在线"><a href="#20、小机切换VG信息不同步问题处理–在线" class="headerlink" title="20、小机切换VG信息不同步问题处理–在线"></a><strong>20、小机切换VG信息不同步问题处理–在线</strong></h4><p>在小机HA切换过程中，切换至备机出现备机的vg信息与主机信息不一致，则稳妥的操作步骤：<br>1、将备机的HA给停掉，smit clstop ，选择bring resource offline选项。<br>2、在主机这边将vg信息备份</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token operator">/</span>usr/lib/objrepos
 <span class="token operator">/</span>usr/share/lib/objrepos
 <span class="token operator">/</span>etc/objrepos<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>3、启动主机的HA<br>4、将vg varyoff掉<br><code>varyoffvg  sharevg</code><br>5、主机这边vg以 -b -u模式varyon<br><code>varyonvg -b -u sharevg</code><br>6、备机操作 importvg信息，其中hdisk3是sharevg中的一块盘<br><code>importvg -L sharevg hdisk3</code><br>7、主机这边正常varyon。<br><code>varyonvg sharevg</code><br>8、信息同步完成，重新切换一下即可。</p>
-<h4 id="21、小机切换VG信息不同步问题处理—离线"><a href="#21、小机切换VG信息不同步问题处理—离线" class="headerlink" title="21、小机切换VG信息不同步问题处理—离线"></a><strong>21、小机切换VG信息不同步问题处理—离线</strong></h4><p>1、将两个节点的HA服务全部停止</p>
+<h4 id="21、小机切换VG信息不同步问题处理–离线"><a href="#21、小机切换VG信息不同步问题处理–离线" class="headerlink" title="21、小机切换VG信息不同步问题处理–离线"></a><strong>21、小机切换VG信息不同步问题处理–离线</strong></h4><p>1、将两个节点的HA服务全部停止</p>
 <p>2、检查两个节点卷组信息</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">CMHOUDU_P720_APP：lspv <span class="token punctuation">|</span>grep shareapp10vg <span class="token punctuation">|</span>wc <span class="token operator">-</span>l
 CMHOUDU_P720_DB： lspv <span class="token punctuation">|</span>grep shareapp10vg <span class="token punctuation">|</span>wc <span class="token operator">-</span>l<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>3、确认两个节点上磁盘PVID一致性<br>    <code>lspv |grep shareapp10vg</code></p>
-<p>4、在DB节点上：<br>重新导入卷组： <code>SHAREAPP10VG</code></p>
+<p>4、在DB节点上：<br>重新导入卷组： <code>SHAREAPP10VG </code></p>
 <p><code>IMPORTVG -Y SHAREAPP10VG HDDISKxx</code> ( 指定一块磁盘，根据实际情况）     </p>
 <p>5、再次检查卷组信息：</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">CMHOUDU_P720_APP：
@@ -556,9 +577,10 @@ lspv <span class="token punctuation">|</span>grep shareapp10vg <span class="toke
 
  lspv <span class="token punctuation">|</span>grep shareapp10vg
  lspv <span class="token punctuation">|</span>grep shareapp10vg<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>6、在DB节点上去激活卷组：<br><code>VARYOFFVG SHAREAPPP10VG</code></p>
+
+<p>6、在DB节点上去激活卷组：<br><code>VARYOFFVG SHAREAPPP10VG </code></p>
 <p>7、在两个节点上启动HA服务。</p>
-<h4 id="22、AIX系统集成标准配置"><a href="#22、AIX系统集成标准配置" class="headerlink" title="22、AIX系统集成标准配置"></a><strong>22、AIX系统集成标准配置</strong></h4><p>1、pageingspace设置为16G，一个rootvg的pageingspace 8G，一个datavg的pageingspace 8G<br>lsps -a  查看所有，如果只有rootvg的hd6，请新增加一个<br>smit pgsp 根据需求增加。<br>2、<code>1smitty chgsys,Maximum number of PROCESSES allowed per user改为2000</code><br>3、vi /etc/security/limits修改default:</p>
+<h4 id="22、AIX系统集成标准配置"><a href="#22、AIX系统集成标准配置" class="headerlink" title="22、AIX系统集成标准配置"></a><strong>22、AIX系统集成标准配置</strong></h4><p>1、pageingspace设置为16G，一个rootvg的pageingspace 8G，一个datavg的pageingspace 8G<br>lsps -a  查看所有，如果只有rootvg的hd6，请新增加一个<br>smit pgsp 根据需求增加。<br>2、<code>1smitty chgsys,Maximum number of PROCESSES allowed per user改为2000</code><br>3、vi &#x2F;etc&#x2F;security&#x2F;limits修改default:</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">fsize = <span class="token operator">-</span>1
 core = <span class="token operator">-</span>1
 cpu = <span class="token operator">-</span>1
@@ -567,13 +589,15 @@ rss = <span class="token operator">-</span>1
 stack = <span class="token operator">-</span>1
 stack_hard = <span class="token operator">-</span>1
 nofiles = <span class="token operator">-</span>1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>4、改时区smitty chtz_date,Change Time Zone Using System Defined Values设置为aisa/shanghai<br>5、将lg_dumplv改为16G。/usr/sbin/extendlv lg_dumplv 120(120为需要增加的PP数量)<br>6、修改crontab允许的作业数。vi /var/adm/cron/queuedefs，在周后一行添加c.200j2n60w<br>7、安装中文包</p>
+
+<p>4、改时区smitty chtz_date,Change Time Zone Using System Defined Values设置为aisa&#x2F;shanghai<br>5、将lg_dumplv改为16G。&#x2F;usr&#x2F;sbin&#x2F;extendlv lg_dumplv 120(120为需要增加的PP数量)<br>6、修改crontab允许的作业数。vi &#x2F;var&#x2F;adm&#x2F;cron&#x2F;queuedefs，在周后一行添加c.200j2n60w<br>7、安装中文包</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">smitty lang
 
   Add Additional Language Environments
 
   CULTURAL convention to install	选择IBM-eucCN Chinese <span class="token punctuation">(</span>Simplified EUC<span class="token punctuation">)</span> <span class="token namespace">[zh_CN]</span>、UTF-8 Chinese 	                                           <span class="token punctuation">(</span>Simplified UTF<span class="token punctuation">)</span> <span class="token namespace">[ZH_CN]</span>、GB18030 S-Chinese <span class="token punctuation">(</span>GB18030<span class="token punctuation">)</span> <span class="token namespace">[Zh_CN]</span>
   LANGUAGE translation to install  	选择IBM-eucCN Chinese <span class="token punctuation">(</span>Simplified EUC<span class="token punctuation">)</span> <span class="token namespace">[zh_CN]</span>、UTF-8 Chinese                                             <span class="token punctuation">(</span>Simplified UTF<span class="token punctuation">)</span> <span class="token namespace">[ZH_CN]</span>、GB18030 S-Chinese <span class="token punctuation">(</span>GB18030<span class="token punctuation">)</span> <span class="token namespace">[Zh_CN]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>8、安装lsof<br>9、安装openssh和openssl<br>10、停止ftp和telnet服务。stopsrc -t ftp,stopsrc -t telnet<br>11、安装AIX必要的补丁包：</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">bos<span class="token punctuation">.</span>adt 
 bos<span class="token punctuation">.</span>acct 
@@ -606,14 +630,16 @@ openssh<span class="token punctuation">.</span>man<span class="token punctuation
 bos<span class="token punctuation">.</span>ahafs            
 bos<span class="token punctuation">.</span>clvm<span class="token punctuation">.</span>enh    
 bos<span class="token punctuation">.</span>cluster       <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>将对应的操作系统iso文件放置服务器例如/backup/soft目录下。iso文件在11.156.178.8上 D:\APP目录下，<br>挂载iso文件  loopmount在AIX6.1以后的版本才有。</p>
+
+<p>将对应的操作系统iso文件放置服务器例如&#x2F;backup&#x2F;soft目录下。iso文件在11.156.178.8上 D:\APP目录下，<br>挂载iso文件  loopmount在AIX6.1以后的版本才有。</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">cd <span class="token operator">/</span>backup/soft
 loopmount <span class="token operator">-</span>i AIX7104SP3-1<span class="token punctuation">.</span>iso <span class="token operator">-</span>o <span class="token string">"-V cdrfs -o ro"</span> <span class="token operator">-</span>m <span class="token operator">/</span>mnt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>df -g 可以查看mnt文件系统了。<br>cd /mnt/installp/ppc<br>smit installp  选择当前目录，选择你要安装的补丁包，有些包可能安装过，有些包可能安装了一部分，<br>卸载执行<br><code>loopumount -i AIX7104SP3-1.iso -m /mnt</code></p>
+
+<p>df -g 可以查看mnt文件系统了。<br>cd &#x2F;mnt&#x2F;installp&#x2F;ppc<br>smit installp  选择当前目录，选择你要安装的补丁包，有些包可能安装过，有些包可能安装了一部分，<br>卸载执行<br><code>loopumount -i AIX7104SP3-1.iso -m /mnt</code></p>
 <h4 id="23、根据端口查看进程ID号"><a href="#23、根据端口查看进程ID号" class="headerlink" title="23、根据端口查看进程ID号"></a><strong>23、根据端口查看进程ID号</strong></h4><p>AIX:<br>root用户执行<br>netstat -Aan|grep 9010<br>查看占用端口的sock号，第一列。<br>rmsock  第一列 tcpcb    （tcp是这个）<br>rmsock  第一列 inpcb    （udp是这个）<br>可以看到进程ID号。</p>
 <p>Linux:<br>netstat -lnp|grep 80</p>
-<h4 id="24、HA双击切换演练"><a href="#24、HA双击切换演练" class="headerlink" title="24、HA双击切换演练"></a><strong>24、HA双击切换演练</strong></h4><p>HA主备/HA互备<br>查看双机状态：<br>lssrc -ls clstrmgrES<br>以下状态为正常Current state: ST_STABLE</p>
-<p>停掉本机HA<br>smit cl_stop<br>选择停止的节点，例如：dbnode， （在当前机器上执行，默认选择当前节点，不用选择）<br>BROADCAST 选择true，<br>Select An Action on Resource Groups 选择Move Resource Groups。<br>查看切换日志：<br>tail -f /var/hacmp/log/hacmp.out<br>lssrc -ls clstrmgrES 查看状态为ST_INIT<br>在B机可以看到所有资源信息，以及启动的应用程序<br>应用程序脚本在/etc/hascripts 下，或者/etc/hascript</p>
+<h4 id="24、HA双击切换演练"><a href="#24、HA双击切换演练" class="headerlink" title="24、HA双击切换演练"></a><strong>24、HA双击切换演练</strong></h4><p>HA主备&#x2F;HA互备<br>查看双机状态：<br>lssrc -ls clstrmgrES<br>以下状态为正常Current state: ST_STABLE</p>
+<p>停掉本机HA<br>smit cl_stop<br>选择停止的节点，例如：dbnode， （在当前机器上执行，默认选择当前节点，不用选择）<br>BROADCAST 选择true，<br>Select An Action on Resource Groups 选择Move Resource Groups。<br>查看切换日志：<br>tail -f &#x2F;var&#x2F;hacmp&#x2F;log&#x2F;hacmp.out<br>lssrc -ls clstrmgrES 查看状态为ST_INIT<br>在B机可以看到所有资源信息，以及启动的应用程序<br>应用程序脚本在&#x2F;etc&#x2F;hascripts 下，或者&#x2F;etc&#x2F;hascript</p>
 <p>执行# smit cl_start<br>选择需要启动的节点。（在当前机器上执行，默认选择当前节点，不用选择）<br>BROADCAST message at stargup 选择true<br>Startup Cluster Information Daemon选择true<br>执行大约10分钟。<br>lssrc -ls clstrmgrES 查看状态为ST_STABLE</p>
 <h4 id="25、HA相关信息查看"><a href="#25、HA相关信息查看" class="headerlink" title="25、HA相关信息查看"></a><strong>25、HA相关信息查看</strong></h4><p>查看资源组信息</p>
 <pre class="line-numbers language-none"><code class="language-none">root@CMAPP_P55A_MAIN:&#x2F;&gt; &#x2F;usr&#x2F;es&#x2F;sbin&#x2F;cluster&#x2F;utilities&#x2F;clRGinfo
@@ -623,6 +649,7 @@ Group Name     State                        Node
                OFFLINE                      node2  
 cmdb_res       ONLINE                       node2          
                OFFLINE                      node1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>查看节点定义的资源组信息</p>
 <pre class="line-numbers language-none"><code class="language-none">CMCONSOLE_P55A_STBY&#x2F;#&#x2F;usr&#x2F;es&#x2F;sbin&#x2F;cluster&#x2F;utilities&#x2F;clshowres
 
@@ -674,6 +701,7 @@ Format for hacmp.out                                Standard
 Node Name                                           node2
 Debug Level                                         high 
 Format for hacmp.out                                Standard<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>列出集群的拓朴信息</p>
 <pre class="line-numbers language-none"><code class="language-none">CMCONSOLE_P55A_STBY&#x2F;#&#x2F;usr&#x2F;es&#x2F;sbin&#x2F;cluster&#x2F;utilities&#x2F;cltopinfo 
 Cluster Name: cmconsole_cluster
@@ -708,6 +736,7 @@ Resource Group cmconsole_res
 
 Total Heartbeats Missed:        0
 Cluster Topology Start Time:    10&#x2F;16&#x2F;2019 23:16:46<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>列出每个资源的集群资源设置</p>
 <pre class="line-numbers language-none"><code class="language-none">CMCONSOLE_P55A_STBY&#x2F;#&#x2F;usr&#x2F;es&#x2F;sbin&#x2F;cluster&#x2F;utilities&#x2F;cllsres
 APPLICATIONS&#x3D;&quot;cmconsole_app&quot;
@@ -720,10 +749,12 @@ SERVICE_LABEL&#x3D;&quot;cmconsole_svr&quot;
 SSA_DISK_FENCING&#x3D;&quot;false&quot;
 VG_AUTO_IMPORT&#x3D;&quot;false&quot;
 VOLUME_GROUP&#x3D;&quot;dmvg&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>根据资源显示启动和停止脚本</p>
 <pre class="line-numbers language-none"><code class="language-none">CMCONSOLE_P55A_STBY&#x2F;#&#x2F;usr&#x2F;es&#x2F;sbin&#x2F;cluster&#x2F;utilities&#x2F;cllsserv
 #Name:Start_script:Stop_script
 cmconsole_app:&#x2F;etc&#x2F;hascript&#x2F;ha_start.sh:&#x2F;etc&#x2F;hascript&#x2F;ha_stop.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>集群停止后无法查看，下面这个命令是集群状态监视器           </p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@CMAPP_P55A_MAIN:/<span class="token operator">></span> /usr/sbin/cluster/clstat <span class="token parameter variable">-o</span>
 clstat - HACMP Cluster Status Monitor
@@ -752,10 +783,11 @@ Node: node1             State: UP
                     Interface: cmdb_svr <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>              Address: <span class="token number">11.156</span>.33.103
                                                          State:   UP
                     Resource Group: cmdb_res                     State:  On line<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>lssrc -ls clstrmgrES 显示集群是否稳定，集群版本，动态节点优先级(pgspace可用，磁盘繁忙，cpu空闲)，</p>
 <p>下面就几个状态做一下说明：<br>    ST_STABLE: 表示运行带有资源在线的集群服务<br>    NOT_CONFIGURED: 未配置集群或未同步节点(20191011 CM3停止时出现这个状态，多了一个资源组不在HA里面，无法正常停止)<br>    ST_INIT: 集群已在该节点上配置但未激活<br>    ST_JOINING: 集群节点正在加入群集<br>    ST_VOTING: 集群节点正在投票决定事件执行<br>    ST_PR_RUNNING: 集群正在运行恢复程序<br>    ST_PR_FAILED: 恢复程序事件脚本失败或启动集群失败<br>    ST_BARRIER: clstrmgr在事件等待之间存在障碍<br>    ST_CBARRIER: clstrmgr退出恢复程序<br>    ST_UNSTABLE: 集群通常由于事件错误而不稳定</p>
 <p>lssrc -ls topsvcs 显示单个diskhb设备的状态，心跳间隔，故障周期(丢失的心跳)<br>lssrc -ls grpsvcs 提供有关已连接客户端的信息，组数<br>lssrc -ls emsvcs  显示事件管理子系统已知的资源监视器<br>lssrc -ls snmpd   显示有关snmpd<br>lslpp -l | grep cluster.es.server.rte 查看双机版本</p>
-<h4 id="26、删除重复路由"><a href="#26、删除重复路由" class="headerlink" title="26、删除重复路由"></a><strong>26、删除重复路由</strong></h4><p>YZH-SC-NPOS-M/#route delete -if en3 default 11.156.33.254</p>
+<h4 id="26、删除重复路由"><a href="#26、删除重复路由" class="headerlink" title="26、删除重复路由"></a><strong>26、删除重复路由</strong></h4><p>YZH-SC-NPOS-M&#x2F;#route delete -if en3 default 11.156.33.254</p>
 <h4 id="27、文件系统扩容（HA）"><a href="#27、文件系统扩容（HA）" class="headerlink" title="27、文件系统扩容（HA）"></a>27、文件系统扩容（HA）</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token number">1</span>、生成PVID
 chdev <span class="token parameter variable">-l</span> hdisk26 <span class="token parameter variable">-a</span> <span class="token assign-left variable">pv</span><span class="token operator">=</span>yes
 chdev <span class="token parameter variable">-l</span> hdisk27 <span class="token parameter variable">-a</span> <span class="token assign-left variable">pv</span><span class="token operator">=</span>yes
@@ -844,6 +876,7 @@ Resource Group Name                  zcfzres                              	  Fil
            <span class="token comment">#确认没问题后回车</span>
 <span class="token number">7</span>、确认文件系统是否扩容成功
 <span class="token function">df</span> <span class="token parameter variable">-g</span> /ora_data                                <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="28、确定磁带是本地盘还是存储盘"><a href="#28、确定磁带是本地盘还是存储盘" class="headerlink" title="28、确定磁带是本地盘还是存储盘"></a>28、确定磁带是本地盘还是存储盘</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">YZH-NRGLHC-1<span class="token comment">#lsdev -Cc disk</span>
 hdisk0  Available 01-00-00 SAS Disk Drive   <span class="token comment">#SAS是本地盘</span>
 hdisk1  Available 01-00-00 SAS Disk Drive
@@ -856,8 +889,9 @@ hdisk7  Available 05-00-02 Hitachi Disk Array <span class="token punctuation">(<
 hdisk8  Available 05-00-02 Hitachi Disk Array <span class="token punctuation">(</span>Fibre<span class="token punctuation">)</span>
 hdisk9  Available 05-00-02 Hitachi Disk Array <span class="token punctuation">(</span>Fibre<span class="token punctuation">)</span>
 hdisk10 Available 05-00-02 Hitachi Disk Array <span class="token punctuation">(</span>Fibre<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="29、修改磁盘的负载均衡模式"><a href="#29、修改磁盘的负载均衡模式" class="headerlink" title="29、修改磁盘的负载均衡模式"></a>29、修改磁盘的负载均衡模式</h4><p><code>chdev -l hdisk52  -a reserve_policy=no_reserve -a algorithm=round_robin</code></p>
-<h4 id="30、查看小机网卡绑定"><a href="#30、查看小机网卡绑定" class="headerlink" title="30、查看小机网卡绑定"></a>30、查看小机网卡绑定</h4><p>root@grwyapp3:/&gt;<code>lsattr -El ent6</code></p>
+
+<h4 id="29、修改磁盘的负载均衡模式"><a href="#29、修改磁盘的负载均衡模式" class="headerlink" title="29、修改磁盘的负载均衡模式"></a>29、修改磁盘的负载均衡模式</h4><p><code>chdev -l hdisk52  -a reserve_policy=no_reserve -a algorithm=round_robin  </code></p>
+<h4 id="30、查看小机网卡绑定"><a href="#30、查看小机网卡绑定" class="headerlink" title="30、查看小机网卡绑定"></a>30、查看小机网卡绑定</h4><p>root@grwyapp3:&#x2F;&gt;<code> lsattr -El ent6</code></p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">adapter_names   ent0,ent2      EtherChannel Adapters                           True
 alt_addr        0x000000000000 Alternate EtherChannel Address                  True
 auto_recovery   <span class="token function">yes</span>            Enable automatic recovery after failover        True
@@ -871,7 +905,8 @@ num_retries     <span class="token number">3</span>              Times to retry 
 retry_time      <span class="token number">1</span>              Wait <span class="token function">time</span> <span class="token punctuation">(</span>in seconds<span class="token punctuation">)</span> between pings            True
 use_alt_addr    no             Enable Alternate EtherChannel Address           True
 use_jumbo_frame no             Enable Gigabit Ethernet Jumbo Frames            True<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>root@grwyapp3:/&gt; <code>lsdev -Cc adapter</code></p>
+
+<p>root@grwyapp3:&#x2F;&gt; <code>lsdev -Cc adapter</code></p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ent0    Available 04-00 <span class="token number">2</span>-Port <span class="token number">10</span>/100/1000 Base-TX PCI-Express Adapter <span class="token punctuation">(</span><span class="token number">14104003</span><span class="token punctuation">)</span>  <span class="token comment"># 属性和其它不一样</span>
 ent1    Available 04-01 <span class="token number">2</span>-Port <span class="token number">10</span>/100/1000 Base-TX PCI-Express Adapter <span class="token punctuation">(</span><span class="token number">14104003</span><span class="token punctuation">)</span> <span class="token comment"># 属性和其它不一样</span>
 ent2    Available 03-00 <span class="token number">4</span>-Port Gigabit Ethernet PCI-Express Adapter <span class="token punctuation">(</span>e414571614102004<span class="token punctuation">)</span>
@@ -891,7 +926,8 @@ usbhc1  Defined   08-09 USB Host Controller <span class="token punctuation">(</s
 usbhc2  Defined   08-0a USB Enhanced Host Controller <span class="token punctuation">(</span>3310e000<span class="token punctuation">)</span>
 vsa0    Available       LPAR Virtual Serial Adapter
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>root@grwyapp3:/&gt; <code>netstat -v en6</code></p>
+
+<p>root@grwyapp3:&#x2F;&gt; <code>netstat -v en6</code></p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>省略<span class="token punctuation">..</span><span class="token punctuation">..</span>
 Statistics <span class="token keyword">for</span> every adapter <span class="token keyword">in</span> the EtherChannel:
 -------------------------------------------------
@@ -909,8 +945,10 @@ ETHERNET STATISTICS <span class="token punctuation">(</span>ent2<span class="tok
 Device Type: Gigabit Ethernet PCIe Adapter <span class="token punctuation">(</span>e4145716e4142004<span class="token punctuation">)</span>
 Hardware Address: <span class="token number">40</span>:f2:e9:14:3f:d0
 <span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>省略<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="31、查看磁盘属性"><a href="#31、查看磁盘属性" class="headerlink" title="31、查看磁盘属性"></a>31、查看磁盘属性</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token keyword">for</span> <span class="token for-or-select variable">i</span> <span class="token keyword">in</span> <span class="token variable"><span class="token variable">`</span><span class="token function">cat</span> a.txt<span class="token variable">`</span></span><span class="token punctuation">;</span><span class="token keyword">do</span> lsattr <span class="token parameter variable">-El</span> <span class="token variable">$i</span> <span class="token operator">|</span> <span class="token function">grep</span> reserve_policy <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'&#123;print $1,$2&#125;'</span><span class="token punctuation">;</span><span class="token keyword">done</span>
 <span class="token keyword">for</span> <span class="token for-or-select variable">i</span> <span class="token keyword">in</span> <span class="token variable"><span class="token variable">`</span><span class="token function">cat</span> a.txt<span class="token variable">`</span></span><span class="token punctuation">;</span><span class="token keyword">do</span> lsattr <span class="token parameter variable">-El</span> <span class="token variable">$i</span> <span class="token operator">|</span> <span class="token function">grep</span> PR_exclusive <span class="token operator">|</span> <span class="token function">awk</span> <span class="token parameter variable">-v</span> <span class="token assign-left variable">var</span><span class="token operator">=</span><span class="token variable">$i</span> <span class="token string">'&#123;print var,$1,$2&#125;'</span><span class="token punctuation">;</span><span class="token keyword">done</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <h4 id="32、给历史命令添加时间"><a href="#32、给历史命令添加时间" class="headerlink" title="32、给历史命令添加时间"></a>32、给历史命令添加时间</h4><p><code>echo &quot;export EXTENDED_HISTORY=ON&quot; &gt;&gt; /etc/profile</code></p>
 <p>查看：<code>fc -t</code></p>
 <h4 id="33、查看VG的类型"><a href="#33、查看VG的类型" class="headerlink" title="33、查看VG的类型"></a>33、查看VG的类型</h4><p>说明：0 为普通VG（最大32个PV） 1为BIG（最大128个PV） 2为Scalable（最大1024个PV）</p>
@@ -943,16 +981,20 @@ PV RESTRICTION: ???????
 Infinite Retry: <span class="token number">2</span>
 Varyon State:   <span class="token number">0</span>
 Disk Block Size <span class="token number">512</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="34、查看端口号和进程"><a href="#34、查看端口号和进程" class="headerlink" title="34、查看端口号和进程"></a>34、查看端口号和进程</h4><p>1）查看端口信息</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">netstat</span> <span class="token parameter variable">-Aan</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token number">1363</span>
 f1000f00039343b8 tcp4       <span class="token number">0</span>      <span class="token number">0</span>  <span class="token number">192.196</span>.128.42.1363   *.*                   LISTEN
 f1000f0003917200 udp4       <span class="token number">0</span>      <span class="token number">0</span>  *.1363                *.* <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>2）如果是tcp连接，则使用</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">rmsock f1000f00039343b8 tcpcb
 The socket 0xf1000f0003934008 is being held by proccess <span class="token number">12911014</span> <span class="token punctuation">(</span>cdpmgr<span class="token punctuation">)</span>.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>3）根据PID查询详细信息</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ps</span> -ef<span class="token operator">|</span><span class="token function">grep</span> <span class="token number">12911014</span>
     root <span class="token number">12911014</span>        <span class="token number">1</span>   <span class="token number">0</span> 02:37:10      -  <span class="token number">0</span>:00 /cdadmin/ibmcd/ndm/bin/cdpmgr <span class="token parameter variable">-i</span> /cdadmin/ibmcd/ndm/cfg/CD_ZFLY_APP1/initparm.cfg<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>那么反过来，知道进程服务pid，查找其通信端口号</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">netstat</span> <span class="token parameter variable">-Aan</span> <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'&#123;print $1&#125;'</span><span class="token operator">|</span> <span class="token keyword">while</span> <span class="token builtin class-name">read</span> line<span class="token punctuation">;</span><span class="token keyword">do</span> <span class="token builtin class-name">echo</span> <span class="token string">"<span class="token variable">$line</span> <span class="token variable"><span class="token variable">`</span>rmsock $line tcpcb <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'&#123;print $(NF-1)&#125;'</span><span class="token variable">`</span></span>"</span><span class="token punctuation">;</span><span class="token keyword">done</span> <span class="token operator">>></span> myfile20210441.txt <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span>
 
@@ -972,13 +1014,17 @@ f1000f0003933bb8 tcp4       <span class="token number">0</span>      <span class
 <span class="token comment"># 合并到一起</span>
 <span class="token function">netstat</span> <span class="token parameter variable">-Aan</span> <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'&#123;print $1&#125;'</span><span class="token operator">|</span> <span class="token keyword">while</span> <span class="token builtin class-name">read</span> line<span class="token punctuation">;</span><span class="token keyword">do</span> <span class="token builtin class-name">echo</span> <span class="token string">"<span class="token variable">$line</span> <span class="token variable"><span class="token variable">`</span>rmsock $line tcpcb <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'&#123;print $(NF-1)&#125;'</span><span class="token variable">`</span></span>"</span><span class="token punctuation">;</span><span class="token keyword">done</span> <span class="token operator">>></span> myfile20210441.txt <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span>
 <span class="token function">netstat</span> <span class="token parameter variable">-Aan</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">grep</span> `ps -ef<span class="token operator">|</span><span class="token function">grep</span> <span class="token function">rsync</span><span class="token operator">|</span><span class="token function">awk</span> <span class="token string">'&#123;print $2&#125;'</span>` myfile20210441.txt <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'&#123;print $1&#125;'</span><span class="token variable">)</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="35、添加定时任务"><a href="#35、添加定时任务" class="headerlink" title="35、添加定时任务"></a>35、添加定时任务</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">grep</span> hwclock /var/spool/cron/crontabs/root<span class="token punctuation">;</span><span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token variable">$?</span> <span class="token operator">!=</span> <span class="token number">0</span> <span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token keyword">then</span> <span class="token builtin class-name">echo</span> <span class="token string">'0 3 * * * root /sbin/hwclock -w'</span> <span class="token operator">>></span> /var/spool/cron/crontabs/root<span class="token punctuation">;</span><span class="token keyword">fi</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h4 id="36、AIX系统HA扩容"><a href="#36、AIX系统HA扩容" class="headerlink" title="36、AIX系统HA扩容"></a>36、AIX系统HA扩容</h4><p>一、识别硬盘</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">cfgmgr<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>二、生成PVID</p>
 <pre class="line-numbers language-SH" data-language="SH"><code class="language-SH"># 两边机器都要执行
 chdev -l hdisk26 -a pv&#x3D;yes
 chdev -l hdisk27 -a pv&#x3D;yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>三、查看同VG硬盘属性</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 执行下面命令查看</span>
 <span class="token keyword">for</span> <span class="token for-or-select variable">i</span> <span class="token keyword">in</span> <span class="token variable"><span class="token variable">`</span>lspv<span class="token operator">|</span><span class="token function">grep</span> sharedbvg<span class="token operator">|</span><span class="token function">awk</span> <span class="token string">'&#123;print $1&#125;'</span><span class="token operator">|</span><span class="token function">head</span> <span class="token parameter variable">-3</span><span class="token variable">`</span></span><span class="token punctuation">;</span><span class="token keyword">do</span> <span class="token punctuation">\</span>
@@ -993,9 +1039,11 @@ done<span class="token operator">></span> <span class="token operator">></span> 
 hdisk4: reserve_policy --<span class="token operator">></span> no_reserve
 hdisk5: reserve_policy --<span class="token operator">></span> no_reserve
 hdisk6: reserve_policy --<span class="token operator">></span> no_reserve<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>四、更改磁盘属性</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">chdev <span class="token parameter variable">-l</span> hdisk26 <span class="token parameter variable">-a</span> <span class="token assign-left variable">reserve_policy</span><span class="token operator">=</span>no_reserve
 chdev <span class="token parameter variable">-l</span> hdisk27 <span class="token parameter variable">-a</span> <span class="token assign-left variable">reserve_policy</span><span class="token operator">=</span>no_reserve<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>五、添加硬盘</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 第一种显示情况</span>
 smitty hacmp--- System Management <span class="token punctuation">(</span>C-SPOC<span class="token punctuation">)</span>-- Storage --- Volume Groups -- Set Characteristics of a Volume Group-- Add a Volume to a Volume Group--选择需要扩容的VG回车--然后选择添加的硬盘---确定
@@ -1014,6 +1062,7 @@ smitty hacmp
 			    Reference <span class="token function">node</span>                                      node1                  
                 VOLUME names
                 <span class="token comment"># 确认没问题后回车</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>六、查看新盘是否加入VG，并确认VG有剩余空间</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ZCFZ_P720_MAIN/<span class="token comment">#lspv                                                                         </span>
 <span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>                
@@ -1036,6 +1085,7 @@ MAX PPs per VG:     <span class="token number">32512</span>
 MAX PPs per PV:     <span class="token number">1016</span>                     MAX PVs:        <span class="token number">32</span>                              
 LTG size <span class="token punctuation">(</span>Dynamic<span class="token punctuation">)</span>: <span class="token number">256</span> kilobyte<span class="token punctuation">(</span>s<span class="token punctuation">)</span>          AUTO SYNC:      no                              
 HOT SPARE:          no                       BB POLICY:      relocatable<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>七、文件系统扩容</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 第一种显示情况</span>
 smitty hacmp--- System Management <span class="token punctuation">(</span>C-SPOC<span class="token punctuation">)</span>-- Storage --- File Systems --- Change / Show Characteristics of a File System --- 选择要扩容的目录，回车 --- 在Unit Size选择Gigabytes单位，在Number of Units写扩容后的总大小 --- 确定
@@ -1060,6 +1110,7 @@ smitty hacmp
             Inline Log?                                    no                                 
             Inline Log size <span class="token punctuation">(</span>MBytes<span class="token punctuation">)</span>                       <span class="token number">0</span>  
            <span class="token comment">#确认没问题后回车</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>八、如果扩容失败，可能是因为LV pps数不够</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 确认LV支持的最大的PP数</span>
 CMHOUDU_P720_DB/<span class="token comment">#lslv lsdata_lv</span>
@@ -1093,9 +1144,11 @@ Error detail:
 <span class="token comment"># 解决方法：就是加大 MAX Lps数量</span>
 smitty hacmp--- System Management <span class="token punctuation">(</span>C-SPOC<span class="token punctuation">)</span>-- Storage --- Logical Volumes --- Change a Logical Volume --- 在弹出的第一个对话框中选择LV所在的VG，回车 --- 在弹出的第二个对话框中选择要扩展的LV名称，回车 --- 修改如下选项
 MAXIMUM NUMBER of LOGICAL PARTITIONS   <span class="token punctuation">[</span><span class="token number">5000</span><span class="token punctuation">]</span>，其它不动，然后回车<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="37、检查僵尸进程"><a href="#37、检查僵尸进程" class="headerlink" title="37、检查僵尸进程"></a>37、检查僵尸进程</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">YZH-SC-XYK-APP/<span class="token comment">#ps -efl|pg|grep "Z"</span>
    F   S      <span class="token environment constant">UID</span>      PID     <span class="token environment constant">PPID</span>     C PRI NI ADDR    SZ    WCHAN    STIME    TTY  TIME CMD
  <span class="token number">50804</span> Z    bjnsfa  <span class="token number">13959410</span>  <span class="token number">18350246</span>  <span class="token number">0</span> <span class="token number">255</span> <span class="token number">20</span>  <span class="token number">0</span>:00                              <span class="token operator">&lt;</span>defunct<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="38、显示物理卷信息"><a href="#38、显示物理卷信息" class="headerlink" title="38、显示物理卷信息"></a>38、显示物理卷信息</h4><p>1）显示系统定义和已配置的物理卷</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ lsdev <span class="token parameter variable">-Cc</span> disk <span class="token operator">|</span> <span class="token function">head</span> <span class="token parameter variable">-8</span>
 hdisk0   Available 00-00-00 SAS Disk Drive
@@ -1106,6 +1159,7 @@ hdisk4   Available 04-00-02 Hitachi Disk Array <span class="token punctuation">(
 hdisk5   Available 04-00-02 Hitachi Disk Array <span class="token punctuation">(</span>Fibre<span class="token punctuation">)</span>
 hdisk6   Available 04-00-02 Hitachi Disk Array <span class="token punctuation">(</span>Fibre<span class="token punctuation">)</span>
 hdisk7   Available 04-00-02 Hitachi Disk Array <span class="token punctuation">(</span>Fibre<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>2）显示一个物理卷的属性</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ lspv hdisk0
 PHYSICAL VOLUME:    hdisk0                   VOLUME GROUP:     rootvg
@@ -1119,11 +1173,13 @@ USED PPs:           <span class="token number">176</span> <span class="token pun
 FREE DISTRIBUTION:  <span class="token number">111</span><span class="token punctuation">..</span><span class="token number">39</span><span class="token punctuation">..</span>09<span class="token punctuation">..</span><span class="token number">111</span><span class="token punctuation">..</span><span class="token number">112</span>                      
 USED DISTRIBUTION:  01<span class="token punctuation">..</span><span class="token number">73</span><span class="token punctuation">..</span><span class="token number">102</span><span class="token punctuation">..</span>00<span class="token punctuation">..</span>00                        
 MIRROR POOL:        None                <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>3）显示一个物理卷上分布的逻辑卷</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">YZHCM3DB/<span class="token comment">#lspv -l hdisk761</span>
 hdisk761:
 LV NAME               LPs     PPs     DISTRIBUTION          MOUNT POINT
 archivelog-lv         <span class="token number">499</span>     <span class="token number">499</span>     <span class="token number">100</span><span class="token punctuation">..</span><span class="token number">100</span><span class="token punctuation">..</span><span class="token number">99</span><span class="token punctuation">..</span><span class="token number">100</span><span class="token punctuation">..</span><span class="token number">100</span> /rmdata<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>4）显示物理卷上每个逻辑卷物理分布情况，同时显示逻辑卷类型和文件mount点</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">YZHCM3DB/<span class="token comment">#lspv -p hdisk761</span>
 hdisk761:
@@ -1133,11 +1189,23 @@ PP RANGE  STATE   REGION        LV NAME             TYPE       MOUNT POINT
 <span class="token number">201</span>-299   used    center        archivelog-lv       jfs2       /rmdata
 <span class="token number">300</span>-399   used    inner middle  archivelog-lv       jfs2       /rmdata
 <span class="token number">400</span>-499   used    inner edge    archivelog-lv       jfs2       /rmdata<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>5）显示物理分区和逻辑分区的对应情况</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ lspv <span class="token parameter variable">-M</span> hdisk761 <span class="token operator">|</span> <span class="token function">head</span> <span class="token parameter variable">-3</span>
 hdisk761:1      archivelog-lv:1199      
 hdisk761:2      archivelog-lv:1200      
 hdisk761:3      archivelog-lv:1201<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
 
                 
             </div>
@@ -1286,12 +1354,12 @@ hdisk761:3      archivelog-lv:1201<span aria-hidden="true" class="line-numbers-r
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/02/12/linux/linux-xiang-guan-scsi-ming-ling/">
+                <a href="/2023/02/12/ansible/ansible-ru-men/">
                     <div class="card-image">
                         
-                        <img src="https://img.javatt.com/c2/c2d1366f6c38d9e329f0a0cad7612480.png" class="responsive-img" alt="Linux相关scsi命令">
+                        <img src="https://ts1.cn.mm.bing.net/th/id/R-C.20481cfcdffccefff9e7bd7bb322a0dd?rik=8xIugUv4zxwdGQ&riu=http%3a%2f%2fjust4coding.com%2fimages%2f2017-09-14%2f1.png&ehk=68x7iYnQrijvElEedtUB27olRYyMZCR8v%2feKXk9XtO0%3d&risl=&pid=ImgRaw&r=0" class="responsive-img" alt="ansible入门">
                         
-                        <span class="card-title">Linux相关scsi命令</span>
+                        <span class="card-title">ansible入门</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1308,8 +1376,8 @@ hdisk761:3      archivelog-lv:1201<span aria-hidden="true" class="line-numbers-r
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Linux/" class="post-category">
-                                    Linux
+                            <a href="/categories/Ansible/" class="post-category">
+                                    Ansible
                                 </a>
                             
                             
@@ -1319,8 +1387,8 @@ hdisk761:3      archivelog-lv:1201<span aria-hidden="true" class="line-numbers-r
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/linux-scsi/">
-                        <span class="chip bg-color">linux-scsi</span>
+                    <a href="/tags/ansible/">
+                        <span class="chip bg-color">ansible</span>
                     </a>
                     
                 </div>
