@@ -1,0 +1,1712 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="K8S-CKA模拟试题, 博客，个人经验分离，kubernetes,k8s,Linux运维，Python">
+    <meta name="description" content="1、模拟RBAC
+Context
+
+为部署流水线创建一个新的ClusterRole并将其绑定到范围为特定的namespace的特定ServiceAccount
+
+Task
+
+设置配置环境
+[student@node-1]$ kubectl ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>K8S-CKA模拟试题 | 躺平的人生</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">躺平的人生</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">躺平的人生</div>
+        <div class="logo-desc">
+            
+            本站记录本人各种学习的旅途，笔记，用于巩固自我并启发后来人
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://miaohsukang.gitee.io" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #F062A7;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://miaohsukang.gitee.io" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://nwzimg.wezhan.cn/contents/sitefiles2033/10168677/images/9730499.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">K8S-CKA模拟试题</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/CKA/">
+                                <span class="chip bg-color">CKA</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E8%80%83%E8%AF%95%E8%AE%A4%E8%AF%81/" class="post-category">
+                                考试认证
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-02-11
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2023-02-12
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    5.3k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    25 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="1、模拟RBAC"><a href="#1、模拟RBAC" class="headerlink" title="1、模拟RBAC"></a>1、模拟RBAC</h3><blockquote>
+<p>Context</p>
+</blockquote>
+<p>为部署流水线创建一个新的ClusterRole并将其绑定到范围为特定的namespace的特定ServiceAccount</p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>设置配置环境</p>
+<p>[student@node-1]$ <code>kubectl config use-context k8s</code></p>
+<p>创建一个名为<strong>deployment-clusterrole</strong>的clusterrole，该clusterrole只允许对<strong>Deployment、Daemonset、Statefulset</strong>具有<strong>create</strong>权限</p>
+<p>在现有的 namespace <strong>app-team1</strong>中创建一个名为<strong>cicd-token</strong>的新 ServiceAccount。</p>
+<p>限于 namespace <strong>app-team1</strong>中，将新的ClusterRole <strong>deployment-clusterrole</strong> 绑定到新的 ServiceAccount <strong>cicd-token</strong></p>
+<p>解题：</p>
+<p>官方手册搜索关键字：dbca</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context k8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）创建集群角色deployment-clusterrole</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl create clusterrole deployment-clusterrole  --verb=create --resource=deployments,daemonsets,statefulsets  #注意：要写小写，每个需要添加一个s</span>
+clusterrole.rbac.authorization.k8s.io/deployment-clusterrole created<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>3）在指定的名称空间app-team1下面创建服务账号cicd-token</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看命令帮助</span>
+root@master1:~<span class="token comment"># kubectl create serviceaccount -h</span>
+<span class="token comment"># 模拟环境没有app-team1这个名称空间</span>
+root@master1:~<span class="token comment"># kubectl create ns app-team1</span>
+namespace/app-team1 created
+<span class="token comment"># 创建SA</span>
+root@master1:~<span class="token comment"># kubectl create serviceaccount cicd-token -n app-team1</span>
+serviceaccount/icd-token created<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>4）题目指定在现有的名称空间下绑定集群角色到指定的SA</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl create rolebinding cicd-token-binding -n app-team1 --clusterrole=deployment-clusterrole --serviceaccount=app-team1:cicd-token</span>
+rolebinding.rbac.authorization.k8s.io/cicd-token-binding created<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>5）检查</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl describe clusterrole deployment-clusterrole </span>
+root@master1:~<span class="token comment"># kubectl describe rolebinding -n app-team1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="2、查看pod的cpu"><a href="#2、查看pod的cpu" class="headerlink" title="2、查看pod的cpu"></a>2、查看pod的cpu</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境：</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context k8s</p>
+<blockquote>
+<p>Task：</p>
+</blockquote>
+<p>找出标签是<strong>name=cpu-user</strong>的Pod，并过滤出使用CPU最高的Pod，然后把它的名字写在已经存在的/opt/KUTR00401/KUTR00401.txt文件里（注意他没有说指定namespace。所以需要使用-A指定所以namespace）</p>
+<p><strong>解题：</strong></p>
+<p>官方手册搜索关键字：</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context k8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）执行下面命令查看</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># -A 表示查看所有命名空间</span>
+<span class="token comment"># kubectl top [flags] [options]	显示资源（CPU、内存、存储）的使用情况</span>
+root@master1:~<span class="token comment"># kubectl top pod -l name=cpu-user --sort-by=cpu -A</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>3）将CPU占用最多的pod的name写入指定文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># echo "pod name" > /opt/KUTR00401/KUTR00401.txt</span>
+<span class="token comment"># 注意：这里由于翻译问题可能文件名字不存在，可以先进去/opt下，确认这个文件具体目录在写入进去,别新建文件目录，否则没分</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="3、网络策略"><a href="#3、网络策略" class="headerlink" title="3、网络策略"></a>3、网络策略</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境：</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context hk8s</p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>在现有的namespace <strong>my-app</strong>中创建一个名为<strong>allow-port-from-namespace</strong>的新NetworkPolicy。</p>
+<p>确保新的NetworkPolicy允许namespace <strong>echo</strong>中的Pods连接到namespace my-app中的Pods的<strong>9000</strong>端口。</p>
+<p>进一步确保新的NetworkPolicy：</p>
+<p>不允许对没有在监听端口9000的Pods的访问</p>
+<p>不允许非来自 namespace echo中的Pods的访问</p>
+<p>解题：</p>
+<p>官方手册搜索关键字：network-policies</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context hk8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）考试时不用做这两步</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl create ns my-app</span>
+namespace/my-app created
+root@master1:~<span class="token comment"># kubectl create ns echo</span>
+namespace/echo created<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3）查看所有ns的标签label</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 如果访问者的namespace没有标签labe，则需要手动打一个，如果有一个独特的标签labe，则也可以直接使用</span>
+root@master1:~<span class="token comment"># kubectl label ns echo project=echo</span>
+namespace/echo labeled
+root@master1:~<span class="token comment"># kubectl get ns --show-labels </span>
+NAME              STATUS   AGE     LABELS
+app-team1         Active   19h     kubernetes.io/metadata.name<span class="token operator">=</span>app-team1
+default           Active   24h     kubernetes.io/metadata.name<span class="token operator">=</span>default
+<span class="token builtin class-name">echo</span>              Active   3m14s   kubernetes.io/metadata.name<span class="token operator">=</span>echo,project<span class="token operator">=</span>echo
+kube-node-lease   Active   24h     kubernetes.io/metadata.name<span class="token operator">=</span>kube-node-lease
+kube-public       Active   24h     kubernetes.io/metadata.name<span class="token operator">=</span>kube-public
+kube-system       Active   24h     kubernetes.io/metadata.name<span class="token operator">=</span>kube-system
+my-app            Active   3m27s   kubernetes.io/metadata.name<span class="token operator">=</span>my-app<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>4）编辑yaml文件，在复制官方代码时，使用:set paste防止错行</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">root@master1<span class="token punctuation">:</span>/mnt<span class="token comment"># cat 1.yaml </span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> networking.k8s.io/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> NetworkPolicy
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> allow<span class="token punctuation">-</span>port<span class="token punctuation">-</span>from<span class="token punctuation">-</span>namespace
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> my<span class="token punctuation">-</span>app
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">podSelector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+  <span class="token key atrule">policyTypes</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> Ingress  <span class="token comment"># 策略影响入栈流量</span>
+  <span class="token key atrule">ingress</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">from</span><span class="token punctuation">:</span> <span class="token comment"># 允许流量的来源</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">namespaceSelector</span><span class="token punctuation">:</span>
+            <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+              <span class="token key atrule">project</span><span class="token punctuation">:</span> echo  <span class="token comment"># 访问者的命名空间的标签label</span>
+      <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP
+          <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9000</span>  <span class="token comment"># 被访问者公开的端口</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>5）更新yaml文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl apply -f 1.yaml </span>
+networkpolicy.networking.k8s.io/allow-port-from-namespace created<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="4、四层负载均衡service"><a href="#4、四层负载均衡service" class="headerlink" title="4、四层负载均衡service"></a>4、四层负载均衡service</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境：</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context k8s</p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>重新配置一个已经存在的front-end的deployment，在名字为nginx的容器里面添加一个端口配置，名字为<strong>http</strong>，暴露端口号为<strong>80/tcp</strong>，然后创建一个<strong>service</strong>，名字为<strong>front-end-svc</strong>，暴露该deployment的http端口，并且service的类型为<strong>NodePort</strong></p>
+<p>解题：</p>
+<p>官方手册搜索关键字：service</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context k8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）检查deployment信息</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl get deployments front-end</span>
+Error from server <span class="token punctuation">(</span>NotFound<span class="token punctuation">)</span>: deployments.apps <span class="token string">"front-end"</span> not found  <span class="token comment"># 模拟环境中没有这个控制器</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>3）参考官方文档，按照需要edit deployment，添加端口信息</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">kubectl edit deployment front<span class="token punctuation">-</span>end
+<span class="token comment"># 添加如下配置，主要是在name为nginx的容器下</span>
+	<span class="token key atrule">imagePullPolicy</span><span class="token punctuation">:</span> Always
+	<span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+	<span class="token key atrule">ports</span><span class="token punctuation">:</span>
+	<span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span>
+	  <span class="token key atrule">name</span><span class="token punctuation">:</span> http
+	  <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>4)创建service</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl expose deployment front-end --name=front-end-svc --port=80 --target-port=http --type=NodePort</span>
+service/front-end-svc exposed
+<span class="token comment"># 说明，deployment 接的是pod名字，外部端口，容器端口，type别漏了，--name=svc名字</span>
+root@master1:~<span class="token comment"># kubectl get deployment front-end -owide      # 查看配置</span>
+root@master1:~<span class="token comment"># kubectl get svc                              # 查看服务</span>
+root@master1:~<span class="token comment"># curl svc-ip:端口                             # 验证是否访问到nginx</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="5、七层负载均衡Ingress"><a href="#5、七层负载均衡Ingress" class="headerlink" title="5、七层负载均衡Ingress"></a>5、七层负载均衡Ingress</h3><blockquote>
+<p>设置配置环境</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context k8s</p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>如下创建一个新的nginx Ingress资源：</p>
+<p>名称: pong</p>
+<p>Namespace: ing-internal</p>
+<p>使用服务端口 5678在路径 /hello 上公开服务 hello</p>
+<p>可以使用以下命令检查服务 hello的可用性，该命令应返回 hello：</p>
+<p>curl -kL <INTERNAL_IP>/hello</p>
+<p><strong>解题：</strong></p>
+<p>官方手册搜索关键字：ingress</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context k8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）在模拟环境创建一个ing-internal，真实环境无需操作</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl create ns ing-internal</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>3）编写ingres yaml文件</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">root@master1<span class="token punctuation">:</span>/mnt<span class="token comment"># cat ingress.yaml </span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> networking.k8s.io/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Ingress
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> pong
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> ing<span class="token punctuation">-</span>internal
+  <span class="token key atrule">annotations</span><span class="token punctuation">:</span>
+    <span class="token key atrule">nginx.ingress.kubernetes.io/rewrite-target</span><span class="token punctuation">:</span> /
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">ingressClassName</span><span class="token punctuation">:</span> nginx
+  <span class="token key atrule">rules</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">http</span><span class="token punctuation">:</span>
+      <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">path</span><span class="token punctuation">:</span> /hello
+        <span class="token key atrule">pathType</span><span class="token punctuation">:</span> Prefix
+        <span class="token key atrule">backend</span><span class="token punctuation">:</span>
+          <span class="token key atrule">service</span><span class="token punctuation">:</span>
+            <span class="token key atrule">name</span><span class="token punctuation">:</span> hello
+            <span class="token key atrule">port</span><span class="token punctuation">:</span>
+              <span class="token key atrule">number</span><span class="token punctuation">:</span> <span class="token number">5678</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>4）查看</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl get ingress -n ing-internal </span>
+NAME   CLASS   HOSTS   ADDRESS   PORTS   AGE
+pong   nginx   *                 <span class="token number">80</span>      9s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="6、Deployment管理pod扩缩容"><a href="#6、Deployment管理pod扩缩容" class="headerlink" title="6、Deployment管理pod扩缩容"></a>6、Deployment管理pod扩缩容</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境：</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context k8s</p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>将loadbalancer的deployment管理的Pod的副本数扩容成6个</p>
+<p><strong>解题：</strong></p>
+<p>官方手册搜索关键字：depolyments—&gt;kubectl scale</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context k8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<h3 id="kubectl-scale"><a href="#kubectl-scale" class="headerlink" title="kubectl scale"></a>kubectl scale</h3><p>扩容或缩容 Deployment、ReplicaSet、Replication Controller或 Job 中Pod数量。</p>
+<p>scale也可以指定多个前提条件，如：当前副本数量或 —resource-version ，进行伸缩比例设置前，系统会先验证前提条件是否成立</p>
+</blockquote>
+<p>2）通过命令修改replicas副本数</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl scale --replicas=6 deployment front-end</span>
+root@master1:/mnt<span class="token comment"># kubectl get deployments</span>
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+front-end   <span class="token number">6</span>/6     <span class="token number">6</span>            <span class="token number">6</span>           4h37m<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="7、pod指定节点部署"><a href="#7、pod指定节点部署" class="headerlink" title="7、pod指定节点部署"></a>7、pod指定节点部署</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context k8s</p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>创建一个Pod，名字为<strong>nginx-kusc00401</strong>，镜像地址是nginx，调度到具有disk=spinning标签的节点上</p>
+<p><strong>解题：</strong></p>
+<p>官方手册搜索关键字：nodeselector—将Pod分配给节点</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context k8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）从官网复制创建pod的yaml进行修改</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">root@master1<span class="token punctuation">:</span>/mnt<span class="token comment"># cat pod.yaml </span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>kusc00401
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx
+  <span class="token key atrule">nodeSelector</span><span class="token punctuation">:</span>  <span class="token comment"># 这个字段可以通过explain查看</span>
+    <span class="token key atrule">disk</span><span class="token punctuation">:</span> spinning<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3）执行yaml并查看pod创建成功</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl get pods</span>
+NAME                         READY   STATUS    RESTARTS   AGE
+front-end-7f64488455-6mfkc   <span class="token number">1</span>/1     Running   <span class="token number">0</span>          3h57m
+front-end-7f64488455-6n62w   <span class="token number">1</span>/1     Running   <span class="token number">0</span>          13m
+front-end-7f64488455-btx9c   <span class="token number">1</span>/1     Running   <span class="token number">0</span>          13m
+front-end-7f64488455-v6ncv   <span class="token number">1</span>/1     Running   <span class="token number">0</span>          3h57m
+front-end-7f64488455-xdwf9   <span class="token number">1</span>/1     Running   <span class="token number">0</span>          3h57m
+nginx-kusc00401              <span class="token number">1</span>/1     Running   <span class="token number">0</span>          108s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="8、检查可用节点数量"><a href="#8、检查可用节点数量" class="headerlink" title="8、检查可用节点数量"></a>8、检查可用节点数量</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境：</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context k8s</p>
+<p>检查集群中有多少节点为Ready状态（不包括被打上 <strong>Taint：NoSchedule</strong> 的节点），之后将数量写到/opt/KUSC00402/kusc00402.txt</p>
+<p><strong>解题：</strong></p>
+<p>官方手册搜索关键字：无</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context k8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）使用grep命令查看</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl get nodes|grep -w 'Ready'|wc -l</span>
+<span class="token number">2</span>
+root@master1:~<span class="token comment"># kubectl describe nodes master1 node1 |grep 'Taint'|grep 'NoSchedule'|wc -l</span>
+<span class="token number">1</span>
+<span class="token comment"># 上面结果相减为1，将得到的结果写入指定的目录文件</span>
+root@master1:~<span class="token comment"># mkdir /opt/KUSC00402</span>
+root@master1:~<span class="token comment"># echo 1 > /opt/KUSC00402/kusc00402.txt</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="9、一个Pod封装多个容器"><a href="#9、一个Pod封装多个容器" class="headerlink" title="9、一个Pod封装多个容器"></a>9、一个Pod封装多个容器</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境：</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context k8s </p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>创建一个Pod，名字为kucc1，这个Pod包含4容器，为nginx、redis、memcached、consul</p>
+<p><strong>解题：</strong></p>
+<p>官方手册搜索关键字：pod</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context k8s <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）从官网复制创建pod的yaml进行修改</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">root@master1<span class="token punctuation">:</span>/mnt<span class="token comment"># cat pod-rucc.yaml </span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> kucc1
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> redis
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> redis
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> memcached
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> memcached
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> consul
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> consul<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3）执行yaml文件，并查看pod处理running状态</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl get pods</span>
+NAME                         READY   STATUS              RESTARTS   AGE
+front-end-7f64488455-6mfkc   <span class="token number">1</span>/1     Running             <span class="token number">0</span>          4h45m
+front-end-7f64488455-6n62w   <span class="token number">1</span>/1     Running             <span class="token number">0</span>          61m
+front-end-7f64488455-btx9c   <span class="token number">1</span>/1     Running             <span class="token number">0</span>          61m
+front-end-7f64488455-v6ncv   <span class="token number">1</span>/1     Running             <span class="token number">0</span>          4h45m
+front-end-7f64488455-xdwf9   <span class="token number">1</span>/1     Running             <span class="token number">0</span>          4h45m
+kucc1                        <span class="token number">0</span>/4     ContainerCreating   <span class="token number">0</span>          6s   <span class="token comment"># 创建</span>
+nginx-kusc00401              <span class="token number">1</span>/1     Running             <span class="token number">0</span>          49m<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="10、PersistentVolume"><a href="#10、PersistentVolume" class="headerlink" title="10、PersistentVolume"></a>10、PersistentVolume</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context hk8s</p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>创建一个pv，名字为app-config，大小为2Gi，访问权限为ReadWriteMany。Volume的类型为hostPath，路径为/srv/app-config</p>
+<p><strong>解题：</strong></p>
+<p>官方手册搜索关键字：pod pv</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context hk8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）编写pv yaml文件</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">root@master1<span class="token punctuation">:</span>/mnt<span class="token comment"># cat pv.yaml </span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> PersistentVolume
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> app<span class="token punctuation">-</span>config
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">capacity</span><span class="token punctuation">:</span>
+    <span class="token key atrule">storage</span><span class="token punctuation">:</span> 2Gi
+  <span class="token key atrule">accessModes</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> ReadWriteMany
+  <span class="token key atrule">hostPath</span><span class="token punctuation">:</span>
+    <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">"/srv/app-config"</span>
+<span class="token comment"># 执行</span>
+root@master1<span class="token punctuation">:</span>/mnt<span class="token comment"># kubectl apply -f pv.yaml </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3）检查</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl get pv</span>
+NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+app-config   2Gi        RWX            Retain           Available                                   5s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="11、PersistentVolumeClaim"><a href="#11、PersistentVolumeClaim" class="headerlink" title="11、PersistentVolumeClaim"></a>11、PersistentVolumeClaim</h3><p>中文翻译：</p>
+<blockquote>
+<p>设置配置环境</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context ok8s</p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>创建一个名字为<strong>pv-volume</strong>的pvc，指定storageClass为<strong>csi-hostpath-sc</strong>，大小为10Mi</p>
+<p>然后创建一个Pod，名字为<strong>web-server</strong>，镜像为nginx，并且挂载该PVC至<strong>/usr/share/nginx/html</strong>，挂载的权限为<strong>ReadWriteOnce</strong>。之后通过kubectl edit或者kubectl path将pvc改成<strong>70Mi</strong>，并且记录修改记录</p>
+<p><strong>解题：</strong></p>
+<p>官方手册搜索关键字：pod pv</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context ok8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）创建PVC</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">root@master1<span class="token punctuation">:</span>/mnt<span class="token comment"># cat pvc.yaml </span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> PersistentVolumeClaim
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> pv<span class="token punctuation">-</span>volume
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">storageClassName</span><span class="token punctuation">:</span> csi<span class="token punctuation">-</span>hostpath<span class="token punctuation">-</span>sc
+  <span class="token key atrule">accessModes</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> ReadWriteOnce
+  <span class="token key atrule">resources</span><span class="token punctuation">:</span>
+    <span class="token key atrule">requests</span><span class="token punctuation">:</span>
+      <span class="token key atrule">storage</span><span class="token punctuation">:</span> 10Mi<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3）创建pod</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">root@master1<span class="token punctuation">:</span>/mnt<span class="token comment"># cat pvc-pod.yaml </span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> web<span class="token punctuation">-</span>server 
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> pv<span class="token punctuation">-</span>volume
+      <span class="token key atrule">persistentVolumeClaim</span><span class="token punctuation">:</span>
+        <span class="token key atrule">claimName</span><span class="token punctuation">:</span> pv<span class="token punctuation">-</span>volume
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+      <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx
+      <span class="token key atrule">volumeMounts</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">mountPath</span><span class="token punctuation">:</span> <span class="token string">"/usr/share/nginx/html"</span>
+          <span class="token key atrule">name</span><span class="token punctuation">:</span> pv<span class="token punctuation">-</span>volume<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>4）执行apply</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">oot@master1:/mnt<span class="token comment"># kubectl apply -f pvc.yaml </span>
+persistentvolumeclaim/pv-volume created
+root@master1:/mnt<span class="token comment"># kubectl apply -f pvc-pod.yaml </span>
+pod/web-server created<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>5）查看创建的PVC和POD</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 注意，这里因为没有csi这个类，所以状态处于pending是正常的。考试会有csi这个类，csi这个类需要安装对应插件才能使用</span>
+root@master1:/mnt<span class="token comment"># kubectl get pvc </span>
+NAME        STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS      AGE
+pv-volume   Pending                                      csi-hostpath-sc   47s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>6）修改PVC大小，并保存修改记录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 我们修改会保存不了，因为上面pvc，pending状态，记住在那里修改即可</span>
+root@master1:/mnt<span class="token comment"># kubectl edit pvc pv-volume --record</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="12、查看Pod日志"><a href="#12、查看Pod日志" class="headerlink" title="12、查看Pod日志"></a>12、查看Pod日志</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境：</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context k8s</p>
+<blockquote>
+<p>Task：</p>
+</blockquote>
+<p>监控名为foobar的Pod的日志，并过滤出具有unable-access-website 信息的行，然后将写入到 /opt/KUTR00101/foobar</p>
+<p><strong>解题：</strong></p>
+<p>官方手册搜索关键字：</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context k8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）监控指定日志并保存到指定文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl logs foobar|grep unable-access-website > /opt/KUTR00101/foobar</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="13、Sidecar代理"><a href="#13、Sidecar代理" class="headerlink" title="13、Sidecar代理"></a>13、Sidecar代理</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境：</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context k8s</p>
+<blockquote>
+<p>Context</p>
+</blockquote>
+<p>将一个现有的 Pod 集成到 Kubernetes 的内置日志记录体系结构中（例如 kubectl logs）。</p>
+<p>添加 streaming sidecar 容器是实现此要求的一种好方法。</p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>使用<strong>busybox</strong> Image来将名为<strong>sidecar</strong>的sidecar容器添加到现有的Pod <strong>legacy-app</strong>上，新的sidecar容器必须运行以下命令：</p>
+<p> <strong>/bin/sh -c tail -n+1 -f /var/log/legacy-app.log</strong></p>
+<p>使用安装在/var/log/的volum，使日志文件legacy-app.log文件可用于sidecar容器</p>
+<p>注意：除了添加所需的volume mount外，请勿更改现有容器的规格。</p>
+<p><strong>解题：</strong></p>
+<p>官方手册搜索关键字：logging</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context k8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）导出legacy-app的YAML文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 导出旧pod修改,注意因为要求不对原有pod修改，只能新增辅助sidecar，另外要注意备份</span>
+root@master1:~<span class="token comment"># kubectl get pods legacy-app -o yaml > sidecar.yaml</span>
+root@master1:~<span class="token comment"># cp sidecar-bak.yaml</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>参考K8S文档—&gt; 日志架构 —&gt; 如下图例子，复制红框部分内容</p>
+<p><img src="https://gitee.com/miaohsukang/myblog/raw/master/img/image-20230101215311780.png" alt=""></p>
+<p><img src="https://gitee.com/miaohsukang/myblog/raw/master/img/image-20230101215311780.png" alt=""></p>
+<p>编辑生成的sidecar YAML文件</p>
+<p><img src="https://gitee.com/miaohsukang/myblog/raw/master/img/768b59b4a678cf324e923e8d80a7c2d4.png" alt=""></p>
+<p>3）在apply这个sidecar文件时，会报错，需要先删除原先的legacy-app POD</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl delete -f c-sidecar.yaml --force --grace-period=0</span>
+warning: Immediate deletion does not <span class="token function">wait</span> <span class="token keyword">for</span> confirmation that the running resource has been terminated. The resource may <span class="token builtin class-name">continue</span> to run on the cluster indefinitely.
+pod <span class="token string">"legacy-app"</span> force deleted<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>4）重新部署POD</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl apply -f sidecar.yaml</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>5）验证</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/mnt<span class="token comment"># kubectl exec legacy-app -c legacy-app -- tail -f /var/log/legacy-app.log    #验证</span>
+root@master1:/mnt<span class="token comment"># kubectl exec legacy-app -c sidecar -- tail -f /var/log/legacy-app.log       #验证是否使用同一个log</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="14、节点维护-指定node节点不可用"><a href="#14、节点维护-指定node节点不可用" class="headerlink" title="14、节点维护-指定node节点不可用"></a>14、节点维护-指定node节点不可用</h3><blockquote>
+<p>设置配置环境</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context ek8s</p>
+<blockquote>
+<p>Tasks</p>
+</blockquote>
+<p>将ek8s-node-1节点设置为不可用，然后重新调度该节点上的所有Pod</p>
+<p>解题：</p>
+<p>官方手册搜索关键字：drain-node</p>
+<p>1）切换集群,模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context ek8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）设置节点不可调度</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 如果标记节点为不可调度（unschedulable），将阻止新 Pod 调度到该 Node 之上， 但不会影响任何已经在其上的 Pod。 这是重启节点或者执行其他维护操作之前的一个有用的准备步骤。</span>
+<span class="token comment"># 要标记一个 Node 为不可调度，执行以下命令</span>
+root@master1:~<span class="token comment"># kubectl cordon node1</span>
+node/node1 cordoned
+root@master1:~<span class="token comment"># kubectl get nodes</span>
+NAME      STATUS                     ROLES                  AGE     VERSION
+master1   Ready                      control-plane,master   6h28m   v1.23.1
+node1     Ready,SchedulingDisabled   <span class="token operator">&lt;</span>none<span class="token operator">></span>                 6h23m   v1.23.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3）告诉 Kubernetes 清空节点</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl drain node1 --delete-emptydir-data --ignore-daemonsets --force</span>
+node/node1 already cordoned
+WARNING: ignoring DaemonSet-managed Pods: kube-system/calico-node-qn4h5, kube-system/kube-proxy-t96gf
+evicting pod kube-system/calico-kube-controllers-677cd97c8d-pg85g
+pod/calico-kube-controllers-677cd97c8d-pg85g evicted
+node/node1 drained<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>4）检查</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl get pods -n kube-system -owide</span>
+NAME                                       READY   STATUS    RESTARTS   AGE     IP              NODE      NOMINATED NODE   READINESS GATES
+calico-kube-controllers-677cd97c8d-dlwlh   <span class="token number">1</span>/1     Running   <span class="token number">0</span>          95s     <span class="token number">10.244</span>.137.67   master1   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
+calico-node-2rfsn                          <span class="token number">1</span>/1     Running   <span class="token number">0</span>          6h28m   <span class="token number">10.10</span>.30.140    master1   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
+calico-node-qn4h5                          <span class="token number">1</span>/1     Running   <span class="token number">0</span>          6h28m   <span class="token number">10.10</span>.30.141    node1     <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
+coredns-65c54cc984-hdrrj                   <span class="token number">1</span>/1     Running   <span class="token number">0</span>          6h35m   <span class="token number">10.244</span>.137.65   master1   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
+coredns-65c54cc984-hf4td                   <span class="token number">1</span>/1     Running   <span class="token number">0</span>          6h35m   <span class="token number">10.244</span>.137.66   master1   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
+etcd-master1                               <span class="token number">1</span>/1     Running   <span class="token number">0</span>          6h35m   <span class="token number">10.10</span>.30.140    master1   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
+kube-apiserver-master1                     <span class="token number">1</span>/1     Running   <span class="token number">0</span>          6h35m   <span class="token number">10.10</span>.30.140    master1   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
+kube-controller-manager-master1            <span class="token number">1</span>/1     Running   <span class="token number">0</span>          6h35m   <span class="token number">10.10</span>.30.140    master1   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
+kube-proxy-q7zsx                           <span class="token number">1</span>/1     Running   <span class="token number">0</span>          6h35m   <span class="token number">10.10</span>.30.140    master1   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
+kube-proxy-t96gf                           <span class="token number">1</span>/1     Running   <span class="token number">0</span>          6h29m   <span class="token number">10.10</span>.30.141    node1     <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
+kube-scheduler-master1                     <span class="token number">1</span>/1     Running   <span class="token number">0</span>          6h35m   <span class="token number">10.10</span>.30.140    master1   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="15、K8S版本升级"><a href="#15、K8S版本升级" class="headerlink" title="15、K8S版本升级"></a>15、K8S版本升级</h3><blockquote>
+<p>设置配置环境</p>
+</blockquote>
+<p>[student@node-1] $kubectl config use-context mk8s</p>
+<blockquote>
+<p>Tasks</p>
+</blockquote>
+<p>现有的Kubernetes 集群正在运行版本1.23.1。仅将master节点上的所有 Kubernetes 控制平面和节点组件升级到版本1.23.2。</p>
+<p>（注意，考试时的集群可能为1.23.0，会让你从1.23.0升级为1.23.1。甚至是1.22.1升级为1.22.2。所以敲命令时，具体要升级的版本要注意，根据题目要求更改。）</p>
+<p><strong>确保在升级之前 drain master节点，并在升级后 uncordon master节点。</strong></p>
+<p>可以使用以下命令，通过ssh连接到master节点：</p>
+<p>ssh master01</p>
+<p>可以使用以下命令，在该master节点上获取更高权限：</p>
+<p>sudo -i</p>
+<p>另外，在主节点上升级kubelet和kubectl。</p>
+<p>请不要升级工作节点，etcd，container管理器，CNI插件， DNS服务或任何其他插件。</p>
+<p><strong>考点：</strong>如何离线主机，并升级控制面板和升级节点</p>
+<p>解题：</p>
+<p>官方手册搜索关键字：kubeadm-upgrade</p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context mk8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）先把master1设置为维护</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl cordon master1 </span>
+node/master1 cordoned
+root@master1:~<span class="token comment"># kubectl get nodes</span>
+NAME      STATUS                     ROLES                  AGE   VERSION
+master1   Ready,SchedulingDisabled   control-plane,master   8h    v1.23.1
+node1     Ready                      <span class="token operator">&lt;</span>none<span class="token operator">></span>                 8h    v1.23.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3）把master节点上的pod都驱逐走</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl drain master1 --force --delete-emptydir-data --ignore-daemonsets </span>
+node/master1 already cordoned
+WARNING: ignoring DaemonSet-managed Pods: kube-system/calico-node-2rfsn, kube-system/kube-proxy-q7zsx
+evicting pod kube-system/coredns-65c54cc984-hf4td
+evicting pod kube-system/coredns-65c54cc984-hdrrj
+pod/coredns-65c54cc984-hdrrj evicted
+pod/coredns-65c54cc984-hf4td evicted
+node/master1 drained<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>4）从node节点ssh到master节点</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">linux@node1:~$ <span class="token function">ssh</span> master1 
+The authenticity of <span class="token function">host</span> <span class="token string">'master1 (10.10.30.140)'</span> can<span class="token string">'t be established.
+ECDSA key fingerprint is SHA256:WZFL/F0FAejlM1f5W3axLC4ui93c4l6CaBtyoURh2kQ.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '</span>master1,10.10.30.140<span class="token string">' (ECDSA) to the list of known hosts.
+linux@master1'</span>s password: 
+Welcome to Ubuntu <span class="token number">20.04</span>.3 LTS <span class="token punctuation">(</span>GNU/Linux <span class="token number">5.15</span>.0-43-generic x86_64<span class="token punctuation">)</span>
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+<span class="token number">290</span> updates can be applied immediately.
+<span class="token number">139</span> of these updates are standard security updates.
+To see these additional updates run: <span class="token function">apt</span> list <span class="token parameter variable">--upgradable</span>
+
+New release <span class="token string">'22.04.1 LTS'</span> available.
+Run <span class="token string">'do-release-upgrade'</span> to upgrade to it.
+
+Your Hardware Enablement Stack <span class="token punctuation">(</span>HWE<span class="token punctuation">)</span> is supported <span class="token keyword">until</span> April <span class="token number">2025</span>.
+Last login: Fri Dec <span class="token number">23</span> 00:59:01 <span class="token number">2022</span> from <span class="token number">10.10</span>.30.1
+linux@master1:~$ <span class="token function">sudo</span> <span class="token parameter variable">-i</span>
+<span class="token punctuation">[</span>sudo<span class="token punctuation">]</span> password <span class="token keyword">for</span> linux: 
+root@master1:~<span class="token comment"># </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>5）升级kubeadm</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看kubeadm原始版本</span>
+root@master1:~<span class="token comment"># kubeadm version</span>
+kubeadm version: <span class="token operator">&amp;</span>version.Info<span class="token punctuation">&#123;</span>Major:<span class="token string">"1"</span>, Minor:<span class="token string">"23"</span>, GitVersion:<span class="token string">"v1.23.1"</span>, GitCommit:<span class="token string">"86ec240af8cbd1b60bcc4c03c20da9b98005b92e"</span>, GitTreeState:<span class="token string">"clean"</span>, BuildDate:<span class="token string">"2021-12-16T11:39:51Z"</span>, GoVersion:<span class="token string">"go1.17.5"</span>, Compiler:<span class="token string">"gc"</span>, Platform:<span class="token string">"linux/amd64"</span><span class="token punctuation">&#125;</span>
+<span class="token comment"># 查看仓库中最新版本</span>
+root@master1:~<span class="token comment"># apt-cache show kubeadm|grep 1.23.2</span>
+Version: <span class="token number">1.23</span>.2-00
+Filename: pool/kubeadm_1.23.2-00_amd64_f3593ab00d33e8c0a19e24c7a8c81e74a02e601d0f1c61559a5fb87658b53563.deb
+root@master1:~<span class="token comment"># apt-get update &amp;&amp; apt-get install kubeadm=1.23.2-00</span>
+<span class="token comment"># 验证下载操作正常，并且 kubeadm 版本正确</span>
+root@master1:~<span class="token comment"># kubeadm version</span>
+kubeadm version: <span class="token operator">&amp;</span>version.Info<span class="token punctuation">&#123;</span>Major:<span class="token string">"1"</span>, Minor:<span class="token string">"23"</span>, GitVersion:<span class="token string">"v1.23.2"</span>, GitCommit:<span class="token string">"9d142434e3af351a628bffee3939e64c681afa4d"</span>, GitTreeState:<span class="token string">"clean"</span>, BuildDate:<span class="token string">"2022-01-19T17:34:34Z"</span>, GoVersion:<span class="token string">"go1.17.5"</span>, Compiler:<span class="token string">"gc"</span>, Platform:<span class="token string">"linux/amd64"</span><span class="token punctuation">&#125;</span>
+<span class="token comment"># 验证升级计划</span>
+kubeadm upgrade plan
+<span class="token comment"># 选择要升级到的目标版本，升级其它组件但要排除etcd，输入Y继续</span>
+root@master1:~<span class="token comment"># kubeadm upgrade apply v1.23.2 --etcd-upgrade=false</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>6）升级kubelet和kubectl</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># apt-get install kubelet=1.23.2-00</span>
+root@master1:~<span class="token comment"># apt-get install kubectl=1.23.2-00</span>
+<span class="token comment"># 查看</span>
+root@master1:~<span class="token comment"># kubectl get nodes</span>
+NAME      STATUS                     ROLES                  AGE   VERSION
+master1   Ready,SchedulingDisabled   control-plane,master   9h    v1.23.2
+node1     Ready                      <span class="token operator">&lt;</span>none<span class="token operator">></span>                 9h    v1.23.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>7、查看kubelet和kubectl版本</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubelet --version</span>
+Kubernetes v1.23.2
+root@master1:~<span class="token comment"># kubectl version</span>
+Client Version: version.Info<span class="token punctuation">&#123;</span>Major:<span class="token string">"1"</span>, Minor:<span class="token string">"23"</span>, GitVersion:<span class="token string">"v1.23.2"</span>, GitCommit:<span class="token string">"9d142434e3af351a628bffee3939e64c681afa4d"</span>, GitTreeState:<span class="token string">"clean"</span>, BuildDate:<span class="token string">"2022-01-19T17:35:46Z"</span>, GoVersion:<span class="token string">"go1.17.5"</span>, Compiler:<span class="token string">"gc"</span>, Platform:<span class="token string">"linux/amd64"</span><span class="token punctuation">&#125;</span>
+Server Version: version.Info<span class="token punctuation">&#123;</span>Major:<span class="token string">"1"</span>, Minor:<span class="token string">"23"</span>, GitVersion:<span class="token string">"v1.23.2"</span>, GitCommit:<span class="token string">"9d142434e3af351a628bffee3939e64c681afa4d"</span>, GitTreeState:<span class="token string">"clean"</span>, BuildDate:<span class="token string">"2022-01-19T17:29:16Z"</span>, GoVersion:<span class="token string">"go1.17.5"</span>, Compiler:<span class="token string">"gc"</span>, Platform:<span class="token string">"linux/amd64"</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>8）退出到node节点就可以了</p>
+<p>9）恢复master节点的调度</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># kubectl get nodes</span>
+NAME      STATUS                     ROLES                  AGE   VERSION
+master1   Ready,SchedulingDisabled   control-plane,master   10h   v1.23.2
+node1     Ready                      <span class="token operator">&lt;</span>none<span class="token operator">></span>                 10h   v1.23.1
+root@master1:~<span class="token comment"># kubectl uncordon master1 </span>
+node/master1 uncordoned
+root@master1:~<span class="token comment"># kubectl get nodes</span>
+NAME      STATUS   ROLES                  AGE   VERSION
+master1   Ready    control-plane,master   10h   v1.23.2
+node1     Ready    <span class="token operator">&lt;</span>none<span class="token operator">></span>                 10h   v1.23.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="16、ETCD数据库备份"><a href="#16、ETCD数据库备份" class="headerlink" title="16、ETCD数据库备份"></a>16、ETCD数据库备份</h3><p>中文翻译：</p>
+<p>此项目无需更改配置环境，但是，在执行此项目之前，请确保您已返回初始节点。etcd这道题真实考试为第4题，用的集群是真实考试时的上一题的集群，即真题第3题mk8s，所以无需再切换集群了</p>
+<blockquote>
+<p>Task：</p>
+</blockquote>
+<p>首先，为运行在<a href="https://127.0.0.1:2379上的现有">https://127.0.0.1:2379上的现有</a> etcd 实例创建快照并将快照保存到 /srv/data/etcd-snapshot.db文件</p>
+<p>为给定实例创建快照预计能在几秒钟内完成。 如果该操作似乎挂起，则命令可能有问题。用 CTRL + C 来取消操作，然后重试。</p>
+<p>然后还原位于/var/lib/backup/etcd-snapshot-previous.db的现有先前快照。</p>
+<p>提供了以下TLS证书和密钥，以通过etcdctl连接到服务器。</p>
+<p>CA 证书: /opt/KUIN00601/ca.crt</p>
+<p>客户端证书: /opt/KUIN00601/etcd-client.crt</p>
+<p>客户端密钥: /opt/KUIN00601/etcd-client.key</p>
+<p><strong>解题：</strong></p>
+<p>官方手册关键字查询：upgrade-etcd</p>
+<p>确认一下ssh终端，是在[student@node-1]$下面，否则可能找不到etcdctl命令</p>
+<p>备份ETCD</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># mkdir /srv/data/ -p</span>
+root@master1:~<span class="token comment"># etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key snapshot save /srv/data/etcd-snapshot.db</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>还原快照</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key snapshot restore /srv/data/etcd-snapshot.db</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="17、集群故障排查-–-kubelet故障"><a href="#17、集群故障排查-–-kubelet故障" class="headerlink" title="17、集群故障排查 – kubelet故障"></a>17、集群故障排查 – kubelet故障</h3><p>中文解释：</p>
+<blockquote>
+<p>设置配置环境</p>
+</blockquote>
+<p>[student@node-1] $ kubectl config use-context wk8s</p>
+<blockquote>
+<p>Task</p>
+</blockquote>
+<p>一个名为wk8s-node-0的节点状态为NotReady，让其他恢复至正常状态，并确认所有的更改开机自动完成。 </p>
+<p>可以使用以下命令，通过ssh连接到wk8s-node-0节点：</p>
+<p>ssh wk8s-node-0</p>
+<p>可以使用以下命令，在该节点上获取更高权限：</p>
+<p>sudo -i</p>
+<p><strong>解题：</strong></p>
+<p>1）切换集群，模拟环境不用执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl config use-context wk8s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）执行下面命令查看</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>student@node-1<span class="token punctuation">]</span>$ <span class="token function">ssh</span> wk8s-node-0
+<span class="token punctuation">[</span>student@node-1<span class="token punctuation">]</span>$ <span class="token function">sudo</span> <span class="token parameter variable">-i</span>
+<span class="token punctuation">[</span>root@wk8s-node-0<span class="token punctuation">]</span><span class="token comment"># systemctl status kubelet</span>
+<span class="token punctuation">[</span>root@wk8s-node-0<span class="token punctuation">]</span><span class="token comment"># systemctl restart kubelet</span>
+<span class="token punctuation">[</span>root@wk8s-node-0<span class="token punctuation">]</span><span class="token comment"># systemctl enable kubelet</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>退出root，退回到student@wk8s-node-0</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@wk8s-node-0<span class="token punctuation">]</span><span class="token comment">#exit</span>
+<span class="token punctuation">[</span>student@wk8s-node-0<span class="token punctuation">]</span><span class="token comment">#exit</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>退出wk8s-node-0，退回到student@node-1 </p>
+<p>不要输入exit多了，否则会退出考试环境的</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">miaohsukang</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://miaohsukang.gitee.io/2023/02/11/kao-shi-ren-zheng/cka-mo-ni-kao-ti/">https://miaohsukang.gitee.io/2023/02/11/kao-shi-ren-zheng/cka-mo-ni-kao-ti/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">miaohsukang</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/CKA/">
+                                    <span class="chip bg-color">CKA</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/02/12/kao-shi-ren-zheng/cks-mo-ni-kao-ti/">
+                    <div class="card-image">
+                        
+                        <img src="http://training.linuxfoundation.cn/files/editor/images/1606459648417850.png" class="responsive-img" alt="K8S-CKS模拟试题">
+                        
+                        <span class="card-title">K8S-CKS模拟试题</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%80%83%E8%AF%95%E8%AE%A4%E8%AF%81/" class="post-category">
+                                    考试认证
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CKS/">
+                        <span class="chip bg-color">CKS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/02/11/kao-shi-ren-zheng/da-ti-ji-qiao/">
+                    <div class="card-image">
+                        
+                        <img src="https://static.yzou.cn/ue/0A420D49AF914AE5A996A6B0C19A68AF.png" class="responsive-img" alt="K8S-考试技巧">
+                        
+                        <span class="card-title">K8S-考试技巧</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%80%83%E8%AF%95%E8%AE%A4%E8%AF%81/" class="post-category">
+                                    考试认证
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CKS/">
+                        <span class="chip bg-color">CKS</span>
+                    </a>
+                    
+                    <a href="/tags/CKA/">
+                        <span class="chip bg-color">CKA</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2023</span>
+            
+            <a href="/about" target="_blank">Miaohsukang</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://miaohsukang.gitee.io" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://miaohsukang.gitee.io" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:12419315+miaohsukang@user.noreply.gitee.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=258603904" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 258603904" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

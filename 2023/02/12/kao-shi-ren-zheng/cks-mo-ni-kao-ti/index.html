@@ -1,0 +1,1790 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="K8S-CKS模拟试题, 博客，个人经验分离，kubernetes,k8s,Linux运维，Python">
+    <meta name="description" content="1、AppArmor考核知识点：
+a）AppArmor简介
+AppArmor是一个高效和易于使用的Linux系统安全应用程序。AppArmor对操作系统和应用程序所受到的威胁进行从内到外的保护，简单的说，AppArmor是与SELinux类">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>K8S-CKS模拟试题 | 躺平的人生</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">躺平的人生</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">躺平的人生</div>
+        <div class="logo-desc">
+            
+            本站记录本人各种学习的旅途，笔记，用于巩固自我并启发后来人
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://miaohsukang.gitee.io" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #F062A7;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://miaohsukang.gitee.io" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = 'adec5f06f4290eca5edafd9d779f48f6aa4fc83c7a50cd1644545a04aeac2a7e';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('http://training.linuxfoundation.cn/files/editor/images/1606459648417850.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">K8S-CKS模拟试题</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/CKS/">
+                                <span class="chip bg-color">CKS</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E8%80%83%E8%AF%95%E8%AE%A4%E8%AF%81/" class="post-category">
+                                考试认证
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-02-12
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2023-02-12
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    6.9k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    29 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="1、AppArmor"><a href="#1、AppArmor" class="headerlink" title="1、AppArmor"></a>1、AppArmor</h3><p>考核知识点：</p>
+<p><strong>a）AppArmor简介</strong></p>
+<p>AppArmor是一个高效和易于使用的Linux系统安全应用程序。AppArmor对操作系统和应用程序所受到的威胁进行从内到外的保护，简单的说，AppArmor是与SELinux类似的一个访问控制系统，通过它你可以指定程序可以读、写或运行哪些文件，是否可以打开网络端口等。作为对传统Unix的自主访问控制模块的补充，AppArmor提供了强制访问控制机制，它已经被整合到2.6版本的Linux内核中。目前Ubuntu自带了Apparmor。官网：<a target="_blank" rel="noopener" href="https://wiki.ubuntu.com/AppArmor/">https://wiki.ubuntu.com/AppArmor/</a></p>
+<p><strong>b）AppArmor两种工作模式</strong></p>
+<p>enforcement、complain&#x2F;learning</p>
+<p>Enforcement – 在这种模式下，配置文件里列出的限制条件都会得到执行，并且对于违反这些限制条件的程序会进行日志记录。</p>
+<p>Complain – 在这种模式下，配置文件里的限制条件不会得到执行，Apparmor只是对程序的行为进行记录。例如程序可以写一个在配置文件里注明只读的文件，但Apparmor不会对程序的行为进行限制，只是进行记录</p>
+<p><strong>c）访问控制与资源限制</strong></p>
+<p>（1）文件系统的访问控制：</p>
+<p>Apparmor可以对某一个文件，或者某一个目录下的文件进行访问控制，包括以下几种访问模式：<img src="https://gitee.com/miaohsukang/myblog/raw/master/img/1661240335103380.png"></p>
+<p>在配置文件中的写法：</p>
+<p>如 &#x2F;tmp r, (表示可对&#x2F;tmp目录下的文件进行读取)</p>
+<p>注意：没在配置文件中列出的文件，程序是不能访问的</p>
+<p>（2）资源限制</p>
+<p>Apparmor可以提供类似系统调用setrlimit一样的方式来限制程序可以使用的资源。要限制资源，可在配置文件中这样写：</p>
+<p>set rlimit [resource] &lt;&#x3D; [value],</p>
+<p>其resource代表某一种资源，value代表某一个值，要对程序可以使用的虚拟内存做限制时，可以这样写：</p>
+<p>set rlimit as&lt;&#x3D;1M, （可以使用的虚拟内存最大为1M）</p>
+<p>（3）访问网络</p>
+<p>Apparmor可以程序是否可以访问网络进行限制，在配置文件里的语法是：</p>
+<p>network [ [domain] [type] [protocol] ]</p>
+<p>要让程序可以进行所有的网络操作，只需在配置文件中写：</p>
+<p>network,</p>
+<p>要允许程序使用在IPv4下使用TCP协议，可以这样写：</p>
+<p>network inet tcp,</p>
+<p><strong>d）配置文件的编写</strong></p>
+<p>编写完配置文件后，要把文件放到&#x2F;etc&#x2F;apparmor.d这个目录下</p>
+<blockquote>
+<p>切换集群 kubectl config use-context k8s<br>Context<br>AppArmor is enabled on the cluster’s worker node. An AppArmor profile is prepared, but not enforced yet. You may use your browser to open one additional tab to access<br>theAppArmor documentation. Task<br>On the cluster’s worker node, enforce the prepared AppArmor profile located at &#x2F;etc&#x2F;apparmor.d&#x2F;nginx_apparmor . Edit the prepared manifest file located at &#x2F;cks&#x2F;4&#x2F;pod1.yaml to apply the AppArmor profile. Finally, apply the manifest file and create the pod specified in it</p>
+<p>任务：</p>
+<p>在集群的工作节点上，确保准备好的AppArmor文件在&#x2F;etc&#x2F;AppArmor.d&#x2F;目录下，文件名字是nginx_apparmor。编辑位于&#x2F;cks&#x2F;1&#x2F;pod1.yaml的准备好的清单文件，以应用AppArmor配置。最后，应用清单文件并创建pod指定清单文件</p>
+</blockquote>
+<p>解题思路：</p>
+<p>1）关键字： apparmor</p>
+<p>2）切换集群，记住查看node，ssh到worker节点</p>
+<p>3）查看对应的配置文件和名字</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 在node1节点</span>
+<span class="token builtin class-name">cd</span> /etc/apparmor.d
+<span class="token function">cat</span> nginx_apparmor <span class="token comment"># 查看容器名</span>
+<span class="token comment">#include &lt;tunables/global></span>
+profile nginx-profile-3  <span class="token assign-left variable">flags</span><span class="token operator">=</span><span class="token punctuation">(</span>attach_disconnected<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">#include &lt;abstractions/base></span>
+  file,
+  <span class="token comment"># Deny all file writes.</span>
+  deny /** w,
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 创建一个Pod,不加载apparmor配置</span>
+<span class="token function">cat</span> /cks/1/pod1.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-apparmor
+  annotations:
+spec:
+  containers:
+  - name: hello
+    image: busybox
+    command: <span class="token punctuation">[</span> <span class="token string">"sh"</span>, <span class="token string">"-c"</span>, <span class="token string">"echo 'Hello AppArmor!' &amp;&amp; sleep 1h"</span> <span class="token punctuation">]</span>
+    
+<span class="token comment"># 没有grep到说明没有启动</span>
+root@node1:~<span class="token comment"># apparmor_status |grep nginx-profile-3</span>
+<span class="token comment"># 加载启用这个配置文件</span>
+root@node1:~<span class="token comment"># apparmor_parser -q /etc/apparmor.d/nginx_apparmor </span>
+<span class="token comment"># 再次检查，已加载</span>
+root@node1:~<span class="token comment"># apparmor_status |grep nginx-profile-3             </span>
+   nginx-profile-3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>4）修改对应yaml应用这个规则 ，打开官网的网址复制例子，修改容器名字和本地的配置名</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># exit work节点回到跳板机</span>
+vim /cks/4/pod1.yaml
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> hello<span class="token punctuation">-</span>apparmor
+  <span class="token key atrule">annotations</span><span class="token punctuation">:</span>
+    <span class="token key atrule">container.apparmor.security.beta.kubernetes.io/hello</span><span class="token punctuation">:</span> localhost/nginx<span class="token punctuation">-</span>profile<span class="token punctuation">-</span><span class="token number">3</span>
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> hello
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span> <span class="token string">"sh"</span><span class="token punctuation">,</span> <span class="token string">"-c"</span><span class="token punctuation">,</span> <span class="token string">"echo 'Hello AppArmor!' &amp;&amp; sleep 1h"</span> <span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>5）修改后创建出来</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl apply <span class="token parameter variable">-f</span> /cks/4/pod1.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<h3 id="2、kube-bench对K8S进行基准测试"><a href="#2、kube-bench对K8S进行基准测试" class="headerlink" title="2、kube-bench对K8S进行基准测试"></a>2、kube-bench对K8S进行基准测试</h3><p><strong>a）Kube-bench简介</strong></p>
+<p>kube-Bench是一款针对Kubernetes的安全检测工具，从本质上来说，Kube-Bench是一个基于Go开发的应用程序，它可以帮助研究人员对部署的Kubernetes进行安全检测，安全检测原则遵循CIS Kubernetes Benchmark。</p>
+<blockquote>
+<p>切换集群：kubectl config use-context KSCS00201</p>
+<p>背景：</p>
+<p>针对kubeadm创建的集群运行ACIS基准测试工具，发现了多个必须立即解决的问题。</p>
+<p>任务：</p>
+<p>通过配置修复所有问题，并重新启动受影响的组件，以确保新设置生效。</p>
+<p>修复针对APIserver发现的以下所有问题：</p>
+<p>确保1.2.7- -authorization-mode参数不能设置为AlwaysAllow</p>
+<p>确保1.2.8 –authorization-mode参数包含Node</p>
+<p>确保1.2.9–authorization-mode参数包含RBAC</p>
+<p>确保1.2.18 –insecure-bind-address 没有被设置</p>
+<p>确保1.2.19 –insecure-port 参数设置为0</p>
+<p>修复针对kubelet发现的以下所有wentire：</p>
+<p>确保4.2.1 anonymous-auth参数设置为false</p>
+<p>确保4.2.2 -authorization-mode参数不能设置为AlwaysAllow</p>
+<p>尽可能使用webhook authn&#x2F;authz。</p>
+<p>修复针对etcd发现的以下所有问题：</p>
+<p>确保4.2.–client-cert-auth 失败参数设置为true</p>
+</blockquote>
+<p>解题思路：</p>
+<p>到控制节点去做题，如果不是，就ssh切换过去</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 修改APIServer配置文件</span>
+root@master1:~<span class="token comment"># vim /etc/kubernetes/manifests/kube-apiserver.yaml</span>
+修改项  
+  - --authorization-mode<span class="token operator">=</span>Node,RBAC
+  - --insecure-port<span class="token operator">=</span><span class="token number">0</span>  <span class="token comment"># 这项没有的，把它加进去</span>
+  - --insecure-bind-address  删除这项
+<span class="token comment"># 修改Kubelet配置文件</span>
+root@master1:~<span class="token comment"># vim /var/lib/kubelet/config.yaml</span>
+修改项
+  authentication:
+  anonymous:
+    enabled: <span class="token boolean">false</span>  <span class="token comment"># 修改此处</span>
+  webhook:
+    enabled: <span class="token boolean">true</span>
+  authorization:
+    mode: Webhook  <span class="token comment"># 修改此处</span>
+  protectKernelDefaults: <span class="token boolean">true</span>
+<span class="token comment"># kubelet修改完成后要重启服务</span>
+root@master1:~<span class="token comment"># systemctl daemon-reload</span>
+root@master1:~<span class="token comment"># systemctl restart kubelet.service</span>
+root@master1:~<span class="token comment"># systemctl status kubelet.service</span>
+<span class="token comment"># 修改ETCD配置</span>
+root@master1:~<span class="token comment"># vim /etc/kubernetes/manifests/etcd.yaml</span>
+修改项
+  - --client-cert-auth<span class="token operator">=</span>true<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="3、Trivy进行镜像扫描"><a href="#3、Trivy进行镜像扫描" class="headerlink" title="3、Trivy进行镜像扫描"></a>3、Trivy进行镜像扫描</h3><p>Trivy是一种适用于CI的简单而全面的容器漏洞扫描程序。软件漏洞是指软件或操作系统中存在的故障、缺陷或弱点。Trivy检测操作系统包（Alpine、RHEL、CentOS等）和应用程序依赖（Bundler、Composer、npm、yarn等）的漏洞。Trivy很容易使用，只要安装二进制文件，就可以扫描了。扫描只需指定容器的镜像名称。与其他镜像扫描工具相比，例如Clair，Anchore Engine，Quay相比，Trivy在准确性、方便性和对CI的支持等方面都有着明显的优势。</p>
+<p>推荐在CI中使用它，在推送到container registry之前，你可以轻松地扫描本地容器镜像，Trivy具备如下的特征：</p>
+<p>a）检测面很全，能检测全面的漏洞，操作系统软件包（Alpine、Red Hat Universal Base Image、Red Hat Enterprise Linux、CentOS、Oracle Linux、Debian、Ubuntu、Amazon Linux、openSUSE Leap、SUSE Enterprise Linux、Photon OS 和Distrioless）、应用程序依赖项（Bundler、Composer、Pipenv、Poetry、npm、yarn和Cargo）；</p>
+<p>b）使用简单，仅仅只需要指定镜像名称</p>
+<p>c）扫描快且无状态，第一次扫描将在10秒内完成（取决于网络）。随后的扫描将在一秒钟内完成。与其他扫描器在第一次运行时需要很长时间（大约10分钟）来获取漏洞信息，并鼓励你维护持久的漏洞数据库不同，Trivy是无状态的，不需要维护或准备；</p>
+<p>d）易于安装测试：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-v</span> /var/run/docker.sock:/var/run/docker.sock <span class="token parameter variable">-v</span> <span class="token environment constant">$HOME</span>/Library/Caches:/root/.cache/ aquasec/trivy:0.20.2 registry.aliyuncs.com/google_containers/coredns:v1.8.6<span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-i</span> <span class="token string">"high"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>备注：registry.aliyuncs.com&#x2F;google_containers&#x2F;coredns:v1.8.6表示要扫描的镜像</p>
+<blockquote>
+<p>Task</p>
+<p>Use the Trivy open-source container scanner to detect images with severe vulnerabilities used by Pods in the namespace yavin.</p>
+<p>Look for images with High or Critical severity vulnerabilities,and delete the Pods that use those images.</p>
+<p>Trivy is pre-installed on the cluster’s master node only; it is not available on the base system or the worker nodes. You’ll have to connect to the cluster’s master node to use Trivy.</p>
+<p><strong>翻译</strong>：</p>
+<p>使用Trivy开源容器扫描器检测命名空间yavin中Pod使用的具有严重漏洞的镜像。</p>
+<p>查找具有High或Critical漏洞的镜像，并删除使用这些镜像的Pod。</p>
+<p>Trivy仅预装在集群的主节点上；它在基本系统或工作节点上不可用。必须连接到集群的主节点才能使用Trivy</p>
+</blockquote>
+<p><img src="https://gitee.com/miaohsukang/myblog/raw/master/img/1661397909154263.png" alt="image.png"></p>
+<p>解题思路：</p>
+<p>官档查找关键字–&gt; kubectl cheat sheet –&gt; custom-columns</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ssh</span> root@kssc00401-master
+<span class="token comment"># 列举yavin名称空间中运行的所有镜像，按 Pod 分组</span>
+kubectl get pods <span class="token parameter variable">-n</span> yavin <span class="token parameter variable">--output</span><span class="token operator">=</span>custom-columns<span class="token operator">=</span><span class="token string">"NAME:.metadata.name,IMAGE:.spec.containers[*].image"</span>
+kubectl get pods <span class="token parameter variable">-n</span> yavin -owide<span class="token operator">|</span><span class="token function">grep</span> master1  <span class="token comment"># 找出在当前master节点上的image</span>
+<span class="token comment"># 根据查出的镜像进行漏洞扫描</span>
+trivy image --skip-update <span class="token string">'刚刚搜到的镜像'</span><span class="token operator">|</span><span class="token function">egrep</span> <span class="token parameter variable">-i</span> <span class="token string">'high|critical'</span>
+  eg:
+    trivy image <span class="token parameter variable">-s</span> HIGH,CRITICAL amazonlinux:2
+    trivy image <span class="token parameter variable">-s</span> HIGH,CRITICAL amazonlinux:1
+<span class="token comment"># 把检测出来漏洞的镜像对应的pod删除</span>
+kubectl delete pods xxx
+<span class="token comment"># --skip-update 跳过镜像更新，考试可以直接跳过</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="4、sysdig-amp-falco"><a href="#4、sysdig-amp-falco" class="headerlink" title="4、sysdig &amp; falco"></a>4、sysdig &amp; falco</h3><p>Sysdig官网：<a target="_blank" rel="noopener" href="http://www.sysdig.org/">www.sysdig.org</a></p>
+<p>sysdig的定位是系统监控、分析和排障的工具，在linux平台上，已经有很多这方面的工具 tcpdump、htop、iftop、lsof、netstat，它们都能用来分析linux系统的运行情况，而且还有很多日志、监控工具。为什么还需要sysdig呢？ sysdig的优点可以归纳为三个词语：整合、强大、灵活。</p>
+<p>Falco 是一个云原生运行时安全系统，可与容器和原始Linux主机一起使用。它由 Sysdig 开发，是 Cloud Native Computing Foundation（云原生计算基金会）的一个沙箱项目。Falco 的工作方式是查看文件更改、网络活动、进程表和其他数据是否存在可疑行为，然后通过可插拔后端发送警报。通过内核模块或扩展的 BPF 探测器在主机的系统调用级别检查事件。Falco 包含一组丰富的规则，您可以编辑这些规则以标记特定的异常行为，并为正常的计算机操作创建允许列表。</p>
+<blockquote>
+<p>中文翻译：</p>
+<p>你可以使用浏览器打开另一个标签来访问sysdig的文档或Falco的文档。</p>
+<p>任务：</p>
+<p>使用运行时检测工具检测redis这个pod下的单个容器中反常的和频繁发生异常的进程。</p>
+<p>有两种工具可供使用：</p>
+<p>sysdig</p>
+<p>falco</p>
+<p>这些工具仅预安装在集群的工作节点上。</p>
+<p>使用你选择的工具（包括任何未预装的工具），至少分析容器30s，使用过滤器检查最新的异常进程，</p>
+<p>将事件文件存储在&#x2F;opt&#x2F;2&#x2F;report中，其中包含检测到的事件，每行一个事件</p>
+<p>按照以下格式保存：</p>
+<p>[timestamp],[uid], [processName]</p>
+<p>保持工具的原始时间戳格式不变。</p>
+<p>确保将事件文件存储在群集的工作节点上。</p>
+</blockquote>
+<p>解题思路：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">关键字：sysdig
+<span class="token number">0</span>. 记住使用sysdig <span class="token parameter variable">-l</span> <span class="token operator">|</span><span class="token function">grep</span> 搜索相关字段
+<span class="token number">1</span>. 切换集群，查询对应的pod，ssh到pod对应的node主机上
+<span class="token number">2</span>. 使用sysdig，注意要求格式和时间，结果重定向到对应的文件
+<span class="token number">3</span>. sysdig <span class="token parameter variable">-M</span> <span class="token number">30</span> <span class="token parameter variable">-p</span> <span class="token string">"*%evt.time,%user.uid,%proc.name"</span> <span class="token assign-left variable">container.id</span><span class="token operator">=</span>容器id <span class="token operator">></span>/opt/2/report
+如果报错，添加容器进行时参数
+<span class="token number">4</span>. sysdig <span class="token parameter variable">-M</span> <span class="token number">30</span> <span class="token parameter variable">-p</span> <span class="token string">"*%evt.time,%user.uid,%proc.name"</span> <span class="token parameter variable">--cri</span> /var/run/containerd/containerd.sock <span class="token assign-left variable">container.id</span><span class="token operator">=</span>容器id <span class="token operator">></span>/opt/2/report<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>查找对应容器的ID</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看指定pod使用的容器名</span>
+root@master1:~<span class="token comment"># kubectl describe pods|grep 'Image: '</span>
+    Image:          nginx:1.14.2
+<span class="token comment"># 根据容器名查看该容器ID</span>
+root@node1:~<span class="token comment"># docker ps -f ancestor=nginx:1.14.2</span>
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS     NAMES
+6cd5f4fc021c   295c7be07902   <span class="token string">"nginx -g 'daemon of…"</span>   <span class="token number">23</span> minutes ago   Up <span class="token number">23</span> minutes             k8s_nginx_nginx_default_e89927c3-7091-4894-92e6-73b9f5967ba9_0
+<span class="token comment"># 1.25版本如果没有docker这个命令，可以使用crictl命令</span>
+crictl <span class="token function">ps</span> <span class="token operator">|</span><span class="token function">grep</span> redis
+<span class="token comment"># 如果连critctl也没有，可以使用 ctr -n=k8s.io c ls|g</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="5、serviceAccount"><a href="#5、serviceAccount" class="headerlink" title="5、serviceAccount"></a>5、serviceAccount</h3><blockquote>
+<p>背景：</p>
+<p>Pod无法运行，因为指定的ServiceAcccount不正确。</p>
+<p>任务：</p>
+<p>在现有命名空间qa中创建一个名为backend-sa的新ServiceAccount，该帐户不能访问任何secrets凭据资源。检查命名空间qa中运行的名为backend的Pod。编辑Pod使用新创建的backend-sa这个serviceAccount 。你可以在&#x2F;cks&#x2F;9&#x2F;pod9.yaml上找到Pod的清单文件。确保修改之后的Pod正在运行。最后，清理并删除未被Pod使用的serviceAccount。</p>
+</blockquote>
+<p>解题思路：</p>
+<p>1）创建SA</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl create sa backend-sa <span class="token parameter variable">-n</span> qa --dry-run<span class="token operator">=</span>client <span class="token parameter variable">-o</span> yaml <span class="token operator">></span> sa.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>创建</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">$ vim sa.yaml
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> ServiceAccount
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> backend<span class="token punctuation">-</span>sa
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> qa
+<span class="token key atrule">automountServiceAccountToken</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>  <span class="token comment"># 禁止访问任何凭据</span>
+$ kubectl apply <span class="token punctuation">-</span>f sa.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>考试会自动有backend的pod，不需要自己创建</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">$ vim /cks/9/pod9.yaml 
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+    <span class="token key atrule">run</span><span class="token punctuation">:</span> backend
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> backend
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> qa
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">serviceAccountName</span><span class="token punctuation">:</span> backend<span class="token punctuation">-</span>sa
+  <span class="token key atrule">automountServiceAccountToken</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span><span class="token number">1.9</span>
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> backend
+    <span class="token key atrule">resources</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+  <span class="token key atrule">dnsPolicy</span><span class="token punctuation">:</span> ClusterFirst
+  <span class="token key atrule">restartPolicy</span><span class="token punctuation">:</span> Always
+$kubectl apply <span class="token punctuation">-</span>f /cks/9/pod9.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以看看qa名称空间下哪些pod，通过详细信息可以查看这些pod使用哪些sa，把除了backend-sa的sa都删除</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl delete sa sa名字 <span class="token parameter variable">-n</span> qa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<h3 id="6、TLS通信加强"><a href="#6、TLS通信加强" class="headerlink" title="6、TLS通信加强"></a>6、TLS通信加强</h3><p><img src="https://gitee.com/miaohsukang/myblog/raw/master/img/1669970242696125.png" alt="0d0ecad840a337e554c70f5ae04feb8.png"></p>
+<p>解题思路：</p>
+<p>在master节点进行修改</p>
+<p>官网关键字：kube-apiserver,搜索VersionTLS、cipher</p>
+<p>修改apiserver配置文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:~<span class="token comment"># cd /etc/kubernetes/manifests/</span>
+root@master1:/etc/kubernetes/manifests<span class="token comment"># vim kube-apiserver.yaml</span>
+spec:
+  containers:
+  - command:
+    - kube-apiserver
+    - --tls-min-version<span class="token operator">=</span>VersionTLS13  <span class="token comment"># 添加</span>
+    - --tls-cipher-suites<span class="token operator">=</span>TLS_AES_128_GCM_SHA256 <span class="token comment"># 添加</span>
+    - --advertise-address<span class="token operator">=</span><span class="token number">10.10</span>.30.140
+<span class="token comment"># 保存退出后，需要重启kubelet</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>修改etcd配置文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">root@master1:/etc/kubernetes/manifests<span class="token comment"># vim etcd.yaml </span>
+spec:
+  containers:
+  - command:
+    - etcd
+    - --cipher-suites<span class="token operator">=</span>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256  <span class="token comment"># 添加，注意！！ETCD中没有TLS这个参数</span>
+    - --advertise-client-urls<span class="token operator">=</span>https://10.10.30.140:2379
+<span class="token comment"># 保存退出后，需要重启kubelet</span>
+root@master1:~<span class="token comment"># systemctl restart kubelet</span>
+root@master1:~<span class="token comment"># kubectl get nodes</span>
+NAME      STATUS   ROLES                  AGE   VERSION
+master1   Ready    control-plane,master   37d   v1.23.1
+node1     Ready    <span class="token operator">&lt;</span>none<span class="token operator">></span>                 37d   v1.23.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="7、NetworkPolicy拒绝所有入口流量"><a href="#7、NetworkPolicy拒绝所有入口流量" class="headerlink" title="7、NetworkPolicy拒绝所有入口流量"></a>7、NetworkPolicy拒绝所有入口流量</h3><blockquote>
+<p>背景：</p>
+<p>默认的拒绝NetworkPolicy可避免在未定义任何其他NetworkPolicy的命名空间中意外暴漏Pod。</p>
+<p>accidentally：[ˌæksɪˈdɛntəli] ，意外的</p>
+<p>任务</p>
+<p>在命名空间development中为所有入口类型的流量创建一个名为denynetwork的新默认拒绝网络策略。</p>
+<p>新的网络策略必须拒绝命名空间development中的所有ingress通信。</p>
+<p>将新创建的默认拒绝网络策略应用于命名空间development中运行的所有Pod。</p>
+<p>您可以在&#x2F;cks&#x2F;15&#x2F;p1.yaml中找到骨架清单文件</p>
+</blockquote>
+<p>解题思路：</p>
+<p>官网搜索关键字：network-policy—&gt; 找到（默认拒绝所有入站流量）</p>
+<p>将&#x2F;cks&#x2F;15&#x2F;p1.yaml中的内容修改成如下的模版内容</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> networking.k8s.io/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> NetworkPolicy
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> denynetwork
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> development
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">podSelector</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>  <span class="token comment"># 表示所有pod</span>
+  <span class="token key atrule">policyTypes</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> Ingress  <span class="token comment"># 拒绝所有入栈流量</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="8、NetworkPolicy"><a href="#8、NetworkPolicy" class="headerlink" title="8、NetworkPolicy"></a>8、NetworkPolicy</h3><blockquote>
+<p>任务</p>
+<p>创建名为pod-access的网络策略，用来限制development名称空间的products-service这个pod。 </p>
+<p>仅允许以下Pod连接到products-service这个pod：</p>
+<p>在testing这个名称空间下的pod</p>
+<p>任何名称空间下带environment:staging这个标签的pod</p>
+<p>确保创建网络策略。</p>
+<p>可以在清单文件&#x2F;cks&#x2F;6&#x2F;p2.yaml中找到骨架清单文件</p>
+</blockquote>
+<p>解题思路：</p>
+<p>1）首先查看testing名称空间具有的标签</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@xianchaomaster1 ~<span class="token punctuation">]</span><span class="token comment"># kubectl get ns  testing  --show-labels</span>
+NAME      STATUS   AGE   LABELS
+testing   Active   12h       <span class="token assign-left variable">name</span><span class="token operator">=</span>testing<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>2）查看products-service这个pod具有的标签</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl get pods products-service <span class="token parameter variable">-n</span> devlopment --show-lables
+NAME                 READY        LABELS
+products-service       <span class="token number">1</span>/1        <span class="token assign-left variable">run</span><span class="token operator">=</span>products-service<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>3）编辑骨架清单文件</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">vim /cks/6/p2.yaml
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> networking.k8s.io/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> NetworkPolicy
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+<span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">"pod-access"</span>
+<span class="token key atrule">namespace</span><span class="token punctuation">:</span> <span class="token string">"development"</span>
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">podSelector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">run</span><span class="token punctuation">:</span> products<span class="token punctuation">-</span>service 
+  <span class="token key atrule">policyTypes</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> Ingress
+  <span class="token key atrule">ingress</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">from</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">namespaceSelector</span><span class="token punctuation">:</span>
+        <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+          <span class="token key atrule">name</span><span class="token punctuation">:</span> testing  <span class="token comment"># testing名称具有的标签</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">from</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">podSelector</span><span class="token punctuation">:</span>
+        <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+          <span class="token key atrule">environment</span><span class="token punctuation">:</span> staging  <span class="token comment"># 具有environment=staging标签的pod</span>
+      <span class="token key atrule">namespaceSelector</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>  <span class="token comment"># 所有名称空间</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="9、rbac-x2F-clusterrole"><a href="#9、rbac-x2F-clusterrole" class="headerlink" title="9、rbac&#x2F;clusterrole"></a>9、rbac&#x2F;clusterrole</h3><blockquote>
+<p>编辑被pod绑定的sa，sa名字是test-sa-3，这个sa绑定的role仅允许对endpoints类型的resources执行get操作。</p>
+<p>在monitoring这个名称空间创建一个名字是role-2的role，并仅允只对namespaces类型的resources执行delete操作，创建一个名字叫做role-2-binding的rolebinding，将role-2绑定到pod绑定的test-sa-3这个sa上</p>
+</blockquote>
+<p>解题思路：</p>
+<p>官网搜索关键字：rbac</p>
+<p>1）搭建模拟环境</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl create ns monitoring
+kubectl create sa test-sa-3 <span class="token parameter variable">-n</span> monitoring
+kubectl create deploy nginx <span class="token parameter variable">--image</span><span class="token operator">=</span>nginx <span class="token parameter variable">-n</span> monitoring --dry-run<span class="token operator">=</span>client <span class="token parameter variable">-o</span> yaml <span class="token operator">></span> ./1.yaml <span class="token comment"># 在spec下面添加serviceAccountName: test-sa-3</span>
+kubectl apply <span class="token parameter variable">-f</span> <span class="token number">1</span>.yaml
+kubectl create role mon-role <span class="token parameter variable">--verb</span><span class="token operator">=</span>create <span class="token parameter variable">--resource</span><span class="token operator">=</span>deployment <span class="token parameter variable">-n</span> monitoring
+kubectl create rolebinding mon-role-binding <span class="token parameter variable">--role</span><span class="token operator">=</span>mon-role <span class="token parameter variable">--serviceaccount</span><span class="token operator">=</span>monitoring:test-sa-3 <span class="token parameter variable">-n</span> monitoring<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>2）切换context后进行解题</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看绑定的role，如果没有下面的rolebinding，直接编辑role也可以</span>
+kubectl get rolebinding <span class="token parameter variable">-n</span> monitoring
+显示如下：
+NAME               ROLE           
+mon-role-binding   Role/web-role  
+$ kubectl get rolebinding mon-role-binding  <span class="token parameter variable">-n</span> monitoring <span class="token parameter variable">-oyaml</span> <span class="token operator">|</span><span class="token function">grep</span> test-sa-3 <span class="token parameter variable">-B</span> <span class="token number">5</span>
+显示如下：
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: mon-role
+  subjects:
+  - kind: ServiceAccount
+    name: test-sa-3
+<span class="token comment"># 如果没有上面的rolebinding，可以直接编辑role：</span>
+kubectl get role <span class="token parameter variable">-n</span> monitoring
+显示如下：
+NAME      
+mon-role   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>$ kubectl edit role mon-role -n monitoring</p>
+<p><img src="/./photo/1669970437737042.png" alt="b53fd915035370da611f86b289676e3.png"></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建新的role：</span>
+kubectl create role role-2 <span class="token parameter variable">--verb</span><span class="token operator">=</span>delete <span class="token parameter variable">--resource</span><span class="token operator">=</span>namespaces <span class="token parameter variable">-n</span> monitoring
+kubectl create rolebinding role-2-binding <span class="token parameter variable">--role</span><span class="token operator">=</span>role-2 <span class="token parameter variable">--serviceaccount</span><span class="token operator">=</span>monitoring:test-sa-3 <span class="token parameter variable">-n</span> monitoring<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="10、kube-apiserver审计日志记录和采集"><a href="#10、kube-apiserver审计日志记录和采集" class="headerlink" title="10、kube-apiserver审计日志记录和采集"></a>10、kube-apiserver审计日志记录和采集</h3><p><strong>概念：</strong></p>
+<p>Kubernetes审计（Auditing）功能提供了与安全相关的、按时间顺序排列的记录集，记录每个用户使用Kubernetes API的应用以及控制面自身引发的活动。</p>
+<p>审计功能使得集群管理员能够回答以下问题：</p>
+<p>1）发生了什么？</p>
+<p>2）什么时候发生的？</p>
+<p>3）谁触发的？</p>
+<p>4）活动发生在哪个（些）对象上？</p>
+<p>5）在哪观察到的？</p>
+<p>6）它从哪触发的？</p>
+<p>7）活动的后续处理行为是什么？</p>
+<p>Kube-apiserver 执行审计。每个执行阶段的每个请求都会生成一个事件，然后根据特定策略对事件进行预处理并写入后端。</p>
+<p>每个请求都可以用相关的 “stage” 记录。已知的 stage 有：</p>
+<p>RequestReceived – 此阶段事件将在审计处理器接收到请求后，并且在委托给其余处理器之前生成。</p>
+<p>ResponseStarted - 在响应消息的头部发送后，但是响应消息体发送前。这个 stage 仅为长时间运行的请求生成（例如 watch）。</p>
+<p>ResponseComplete - 当响应消息体完成并且没有更多数据需要传输的时候。</p>
+<p>Panic - 当 panic 发生时生成。</p>
+<p>注意：审计日志记录功能会增加 API server的内存消耗，因为需要为每个请求存储审计所需的某些上下文。此外，内存消耗取决于审计日志记录的配置。</p>
+<p>审计策略：</p>
+<p>审计政策定义了关于应记录哪些事件以及应包含哪些数据的规则。处理事件时，将按顺序与规则列表进行比较。第一个匹配规则设置事件的 [审计级别][auditing-level]。已知的审计级别有：</p>
+<p>**None -**符合这条规则的日志将不会记录。</p>
+<p>**Metadata -**记录请求的 metadata（请求的用户、timestamp、resource、verb 等等），但是不记录请求或者响应的消息体。</p>
+<p>**Request -**记录事件的 metadata 和请求的消息体，但是不记录响应的消息体。这不适用于非资源类型的请求。</p>
+<p>**RequestResponse -**记录事件的 metadata，请求和响应的消息体。这不适用于非资源类型的请求。</p>
+<p>可以使用 –audit-policy-file 标志将包含策略的文件传递给 kube-apiserver。如果不设置该标志，则不记录事件。注意 rules 字段必须在审计策略文件中提供。</p>
+<blockquote>
+<p>任务</p>
+<p>在群集中启用审计日志。</p>
+<p>为此，请启用日志后端，并确保：</p>
+<p>1.日志存储在&#x2F;var&#x2F;log&#x2F;kubernetes&#x2F;audit-logs.txt中</p>
+<p>2.日志文件保留5天</p>
+<p>3.最多保留10个审计日志文件</p>
+<p> 基本策略在&#x2F;etc&#x2F;kubernetes&#x2F;logpolicy&#x2F;sample-policy.yaml中提供。它只指定不记录的日志。</p>
+<p>基本策略位于群集的主节点上。</p>
+<p> 编辑并扩展要记录的基本策略：</p>
+<ol>
+<li><p>RequestResponse级别记录namespace的更改</p>
+</li>
+<li><p>Request级别审计只记录在名称空间front-apps中的pod更改</p>
+</li>
+<li><p>Metadata级别记录所有名称空间中的configMap和secret</p>
+</li>
+</ol>
+<p>另外，添加一个全方位的规则来记录Metadata级别的所有其他请求。</p>
+<p>不要忘记应用修改后的策略。</p>
+</blockquote>
+<p>解题思路：</p>
+<p>官网搜索关键字：auditing</p>
+<ol>
+<li>编辑&#x2F;etc&#x2F;kubernetes&#x2F;logpolicy&#x2F;sample-policy.yaml</li>
+</ol>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> audit.k8s.io/v1  <span class="token comment"># This is required.</span>
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Policy
+<span class="token comment"># Don't generate audit events for all requests in RequestReceived stage.</span>
+<span class="token comment"># 不要为RequestReceived阶段中的所有请求生成审计事件。</span>
+<span class="token key atrule">omitStages</span><span class="token punctuation">:</span> <span class="token comment">#省略阶段</span>
+<span class="token punctuation">-</span> <span class="token string">"RequestReceived"</span>
+<span class="token key atrule">rules</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">level</span><span class="token punctuation">:</span> RequestResponse
+    <span class="token key atrule">resources</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">group</span><span class="token punctuation">:</span> <span class="token string">""</span>
+      <span class="token key atrule">resources</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"namespaces"</span><span class="token punctuation">]</span>
+ <span class="token punctuation">-</span> <span class="token key atrule">level</span><span class="token punctuation">:</span> Request
+   <span class="token key atrule">resources</span><span class="token punctuation">:</span>
+   <span class="token punctuation">-</span> <span class="token key atrule">group</span><span class="token punctuation">:</span> <span class="token string">""</span>
+     <span class="token key atrule">resources</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"pods"</span><span class="token punctuation">]</span>
+     <span class="token key atrule">namespaces</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"front-apps"</span><span class="token punctuation">]</span>
+ <span class="token punctuation">-</span> <span class="token key atrule">level</span><span class="token punctuation">:</span> Metadata
+   <span class="token key atrule">resources</span><span class="token punctuation">:</span>
+   <span class="token punctuation">-</span> <span class="token key atrule">group</span><span class="token punctuation">:</span> <span class="token string">""</span>
+     <span class="token key atrule">resources</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"secrets"</span><span class="token punctuation">,</span> <span class="token string">"configmaps"</span><span class="token punctuation">]</span>  <span class="token comment"># 关键字后面加个复数s</span>
+ <span class="token punctuation">-</span> <span class="token key atrule">level</span><span class="token punctuation">:</span> Metadata
+   <span class="token key atrule">omitStages</span><span class="token punctuation">:</span>
+   <span class="token punctuation">-</span> <span class="token string">"RequestReceived"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>编辑&#x2F;etc&#x2F;kubernetes&#x2F;manifests&#x2F;kube-apiserver.yaml，增加如下内容：</li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">- --audit-policy-file<span class="token operator">=</span>/etc/kubernetes/logpolicy/sample-policy.yaml  <span class="token comment"># 审计策略文件</span>
+- --audit-log-path<span class="token operator">=</span>/var/log/kubernetes/audit-logs.txt  <span class="token comment"># 审计日志文件</span>
+- --audit-log-maxage<span class="token operator">=</span><span class="token number">5</span>   <span class="token comment"># 日志最大保留天数</span>
+- --audit-log-maxbackup<span class="token operator">=</span><span class="token number">10</span>  <span class="token comment"># 审计日志文件最大保留数据</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>在APIServer 的 Pod上挂载策略文件和日志文件（考试可能会直接挂载好）：</li>
+</ol>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">-</span>  <span class="token key atrule">mountPath</span><span class="token punctuation">:</span> /var/log/kubernetes
+   <span class="token key atrule">name</span><span class="token punctuation">:</span> kubernetes<span class="token punctuation">-</span>logs
+<span class="token punctuation">-</span>  <span class="token key atrule">mountPath</span><span class="token punctuation">:</span> /etc/kubernetes/logpolicy
+   <span class="token key atrule">name</span><span class="token punctuation">:</span> kubernetes<span class="token punctuation">-</span>policy
+<span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span>  <span class="token key atrule">hostPath</span><span class="token punctuation">:</span>
+   <span class="token key atrule">path</span><span class="token punctuation">:</span> /etc/kubernetes/logpolicy
+   <span class="token key atrule">name</span><span class="token punctuation">:</span> kubernetes<span class="token punctuation">-</span>policy
+<span class="token punctuation">-</span>  <span class="token key atrule">hostPath</span><span class="token punctuation">:</span>
+   <span class="token key atrule">path</span><span class="token punctuation">:</span> /var/log/kubernetes
+   <span class="token key atrule">name</span><span class="token punctuation">:</span> kubernetes<span class="token punctuation">-</span>logs
+
+$ systemctl daemon<span class="token punctuation">-</span>reload
+$ systemctl restart kubelet<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="11、创建Secret"><a href="#11、创建Secret" class="headerlink" title="11、创建Secret"></a>11、创建Secret</h3><blockquote>
+<p>任务</p>
+<p>检索istio-system名称空间中已经存在的Secret ，名字是db1-secret-test。将用户名字段存储在名为&#x2F;cks&#x2F;11&#x2F;old-username.txt的文件中，将密码字段存储在名为&#x2F;cks&#x2F;11&#x2F;old-pass.txt的文件中。</p>
+<p>你必须创建这两个文件；它们还不存在。</p>
+<p>不要使用&#x2F;modify创建的文件，按照以下步骤，如果需要，创建新的临时文件。</p>
+<p>在istio-system名称空间中创建一个名为test的secret，如下所示，</p>
+<p>username : thanos</p>
+<p>password : hahahaha</p>
+<p>最后，创建一个新的Pod，该Pod可以通过卷挂载test这个secret：</p>
+<p>pod name | dev-pod</p>
+<p>namespace | istio-system</p>
+<p>container name | dev-container</p>
+<p>image | nginx:1.9</p>
+<p>volume name | dev-volume</p>
+<p>mount path | &#x2F;etc&#x2F;test-secret</p>
+</blockquote>
+<p>解题思路：</p>
+<p>官网搜索关键字：secret</p>
+<p>–&gt; 先创建模拟环境</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建名称空间</span>
+kubectl create ns istio-system
+<span class="token comment"># 创建secret</span>
+kubectl create secret generic db1-secret-test --from-literal<span class="token operator">=</span>username<span class="token operator">=</span>hello --from-literal<span class="token operator">=</span>password<span class="token operator">=</span><span class="token number">123456</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>1)检索istio-system名称空间内的db1-secret-test这个Pod,保存其用户名和密码</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl get secrets <span class="token parameter variable">-n</span> istio-system db1-secret-test <span class="token parameter variable">-o</span> <span class="token assign-left variable">jsonpath</span><span class="token operator">=</span><span class="token punctuation">&#123;</span>.data.username<span class="token punctuation">&#125;</span><span class="token operator">|</span>base64 <span class="token parameter variable">-d</span> <span class="token operator">></span> /cks/11/old-username.txt
+kubectl get secrets <span class="token parameter variable">-n</span> istio-system db1-secret-test <span class="token parameter variable">-o</span> <span class="token assign-left variable">jsonpath</span><span class="token operator">=</span><span class="token punctuation">&#123;</span>.data.password<span class="token punctuation">&#125;</span><span class="token operator">|</span>base64 <span class="token parameter variable">-d</span> <span class="token operator">></span> /cks/11/old-pass.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>2)创建一个名为test的secret</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">kubectl create secret generic <span class="token builtin class-name">test</span>  <span class="token parameter variable">-n</span> istio-system --from-literal<span class="token operator">=</span>username<span class="token operator">=</span>thanos --from-literal<span class="token operator">=</span>password<span class="token operator">=</span>hahahaha<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>3)根据需求创建secret的pod</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># vim k8s-secret.yaml</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> dev<span class="token punctuation">-</span>pod
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> istio<span class="token punctuation">-</span>system
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> dev<span class="token punctuation">-</span>container
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span><span class="token number">1.9</span>
+    <span class="token key atrule">volumeMounts</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> dev<span class="token punctuation">-</span>volume
+      <span class="token key atrule">mountPath</span><span class="token punctuation">:</span> <span class="token string">"/etc/test-secret"</span>
+      <span class="token key atrule">readOnly</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> dev<span class="token punctuation">-</span>volume
+    <span class="token key atrule">secret</span><span class="token punctuation">:</span>
+      <span class="token key atrule">secretName</span><span class="token punctuation">:</span> test
+<span class="token comment"># kubectl apply -f k8s0secret.yaml</span>
+<span class="token comment"># kubectl get pods dev-pod</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="12、dockerfile和deployment优化部分"><a href="#12、dockerfile和deployment优化部分" class="headerlink" title="12、dockerfile和deployment优化部分"></a>12、dockerfile和deployment优化部分</h3><blockquote>
+<p>任务</p>
+<p>分析并编辑给定的Dockerfile（基于ubuntu:16.0镜像）文件&#x2F;cks&#x2F;7&#x2F;Dockerfile，修复文件中存在的两个安全&#x2F;最佳实践指令。</p>
+<p>分析和编辑给定清单文件&#x2F;cks&#x2F;7&#x2F;deployment.yaml，修复文件中存在的两个安全&#x2F;最佳实践问题字段。</p>
+</blockquote>
+<p>解题思路：</p>
+<p>1)优化dockerfile</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">vim</span> /cks/7/Dockerfile
+FROM ubuntu:16.04  
+<span class="token environment constant">USER</span> nobody
+<span class="token comment"># 把USER ROOT变成USER nobody</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>2)编辑清单文件</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># vim /cks/7/deployment.yaml</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> test
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> dev
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> dev
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">1</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> dev
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> dev
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span><span class="token number">1.9</span>
+        <span class="token key atrule">name</span><span class="token punctuation">:</span> mysql
+        <span class="token key atrule">securityContext</span><span class="token punctuation">:</span> 
+          <span class="token key atrule">privileged</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+          <span class="token key atrule">readOnlyRootFilesystem</span><span class="token punctuation">:</span> <span class="token boolean important">True</span>
+          <span class="token key atrule">runAsUser</span><span class="token punctuation">:</span> <span class="token number">65535</span>
+<span class="token comment"># 'privileged'变成false，readOnlyRootFilesystem’变成True，runAsUser后面的值变成65535</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="13、镜像安全ImagePolicyWebhook"><a href="#13、镜像安全ImagePolicyWebhook" class="headerlink" title="13、镜像安全ImagePolicyWebhook"></a>13、镜像安全ImagePolicyWebhook</h3><blockquote>
+<p>任务：</p>
+<p> 必须在集群的主节点上完成整个任务，所有服务和文件都已提前准备好并放置在主节点上。</p>
+<p>在&#x2F;etc&#x2F;kubernetes&#x2F;config目录下有不完整的配置</p>
+<p> 扫描具有HTTPS端点的<a target="_blank" rel="noopener" href="http://localhost:8081/image_policy%E9%95%9C%E5%83%8F%EF%BC%9A">http://localhost:8081/image_policy镜像：</a></p>
+<p>1.启用必要的插件以创建镜像策略</p>
+<p> 2.验证控制平面的配置并将其更改为拒绝</p>
+<p>3.编辑配置以正确指向提供的HTTPS端点。</p>
+<p> 最后，通过尝试部署易受攻击的资源&#x2F;cks&#x2F;1&#x2F;web1.yaml来测试配置是否有效</p>
+<p>可以在以下位置找到容器镜像扫描的日志文件: &#x2F;var&#x2F;loglimagepolicyiacme.log</p>
+</blockquote>
+<p>解题思路：</p>
+<p>官网搜索关键字：imagepolicywebhook–admission-controllers</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 解决第一个问题</span>
+$ <span class="token builtin class-name">cd</span> /etc/kubernetes/config
+<span class="token comment"># 在此目录有如下一个不完整的文件，修改其中的defaultAllow值true为false</span>
+$ <span class="token function">vim</span> admission_configuration.json
+defaultAllow: <span class="token boolean">false</span>
+<span class="token comment"># 如果没有这个字段，就加一个这个字段，把defaultAllow由true改成false，关闭默认允许</span>
+<span class="token comment"># 解决第二个问题，在这个目录/etc/kubernetes/config下面还有一个文件，把里面的server地址改成题目中要求的</span>
+$ <span class="token function">vim</span> kubeconfig.yaml
+server <span class="token builtin class-name">:</span> https://localhost:8081/image_policy  <span class="token comment">#要查询的远程服务的url，必须是https</span>
+<span class="token comment">#----------------------------- </span>
+<span class="token comment"># 修改如下配置文件</span>
+$ <span class="token function">vim</span> /etc/kubernetes/manifests/kube-apiserver.yaml
+- --enable-admission-plugins<span class="token operator">=</span>NodeRestriction,ImagePolicyWebhook  <span class="token comment"># 以逗号分隔，增加ImagePolicyWebhook</span>
+- --admission-control-config-file<span class="token operator">=</span>/etc/kubernetes/config/admission_configuration.json <span class="token comment"># 增加这个字段</span>
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>
+  volumeMounts:
+  - mountPath: /etc/kubernetes/config
+    name: config
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>
+volumes:
+- hostPath:
+  path: /etc/kubernetes/config  <span class="token comment"># 把宿主机这个目录做成一个卷，挂载到容器里面指定的路径下</span>
+  name: config
+
+$ systemctl restart kubelet
+$ kubectl apply <span class="token parameter variable">-f</span> /cks/1/web1.yaml  <span class="token comment"># 更新这个yaml文件再测试一下</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="14、修改deployment的securityContext配置"><a href="#14、修改deployment的securityContext配置" class="headerlink" title="14、修改deployment的securityContext配置"></a>14、修改deployment的securityContext配置</h3><p><img src="https://gitee.com/miaohsukang/myblog/raw/master/img/1670047256999708.png" alt="8477ee545afebf26dfcca5427536cfb.png"></p>
+<p>解题思路：</p>
+<p>官网搜索关键字：security-context</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 搭建模拟环境，考试不需要做：</span>
+kubectl create ns sec-ns
+kubectl create deploy secdep  <span class="token parameter variable">--image</span><span class="token operator">=</span>nginx <span class="token parameter variable">-n</span> sec-ns
+<span class="token comment"># 解题,不要忘记切换context</span>
+kubectl edit deploy secdep  <span class="token parameter variable">-n</span> sec-ns
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: Always
+        name: nginx
+        resources: <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+        securityContext: <span class="token comment"># 添加这四行</span>
+          allowPrivilegeEscalation: <span class="token boolean">false</span>
+          readOnlyRootFilesystem: True
+          runAsUser: <span class="token number">30000</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="15、gVsior-x2F-runtimeclass"><a href="#15、gVsior-x2F-runtimeclass" class="headerlink" title="15、gVsior&#x2F;runtimeclass"></a>15、gVsior&#x2F;runtimeclass</h3><blockquote>
+<p>背景：</p>
+<p>此集群使用containerd作为CRl运行时。Containerd的默认运行时处理程序是runc。</p>
+<p> Containerd已经准备好支持一个额外的运行时处理程序runsc（gVisor）。</p>
+<p>任务</p>
+<p> 使用已经准备好的runsc，创建一个名字是untrusted的RuntimeClass</p>
+<p>在gvisor上更新client命名空间中的所有POD，不更新已经通过其他runc运行的pod。</p>
+<p> 可以在&#x2F;cks&#x2F;13&#x2F;rc.yaml中找到模板清单文件</p>
+</blockquote>
+<p>解题思路：</p>
+<p>官网搜索关键字：runtime-class</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建untrusted的运行时</span>
+$ <span class="token function">vim</span> /cks/13/rc.yaml
+apiVersion: node.k8s.io/v1  
+kind: RuntimeClass
+metadata:
+  name: untrusted 
+handler: runsc 
+$ kubectl apply <span class="token parameter variable">-f</span> /cks/13/rc.yaml
+<span class="token comment"># 查看client名称空间pod</span>
+$ kubectl get pod <span class="token parameter variable">-n</span> client 
+<span class="token comment"># 假如看到的pod有两个pod1、pod2</span>
+<span class="token comment"># 看到的pod，可以通过</span>
+kubectl get pod pod1 <span class="token parameter variable">-n</span> client <span class="token parameter variable">-o</span> yaml <span class="token operator">></span> <span class="token number">1</span>.yaml <span class="token comment"># 把yaml文件输出，修改如下部分，在重新deleye，apply这个yaml文件</span>
+---
+spec:
+  runtimeClassName: untrusted  <span class="token comment"># 增加这个字段</span>
+  containers:
+    - image: nginx:1.9
+$ kubectl delete <span class="token parameter variable">-f</span> <span class="token number">1</span>.yaml
+$ kubectl apply <span class="token parameter variable">-f</span> <span class="token number">1</span>.yaml
+<span class="token comment"># 其它pod都按此操作</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="16、重新配置cluster的Kubernetes-APl-服务器"><a href="#16、重新配置cluster的Kubernetes-APl-服务器" class="headerlink" title="16、重新配置cluster的Kubernetes APl 服务器"></a>16、重新配置cluster的Kubernetes APl 服务器</h3><blockquote>
+<p>重新配置cluster的Kubernetes APl 服务器，以确保只允许经过身份验证和授权的 REST请求。</p>
+<p>使用授权模式 Node,RBAC 和准入控制器 NodeRestriction。</p>
+<p>删除用户 system:anonymous 的 ClusterRoleBinding来进行清理。注意：所有kubectl 配置环境&#x2F;文件也被配置使用未经身份验证和未经授权的访问。</p>
+<p>你不必更改它，但请注意，一旦完成 cluster 的安全加固， kubectl 的配置将无法工作。</p>
+<p>您可以使用位于 cluster 的 master 节点上，cluster 原本的 kubectl 配置文件</p>
+<p>&#x2F;etc&#x2F;kubernetes&#x2F;admin.conf ，以确保经过身份验证的授权的请求仍然被允许</p>
+</blockquote>
+<p>解题思路：</p>
+<p>官网搜索关键字：api-server—&gt;找(node、admission、mous、bootstrap)</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">vim</span> /etc/kubernetes/manifests/kube-apiserver.yaml
+- --authorization-mode<span class="token operator">=</span>Node,RBAC  <span class="token comment"># 没有这个字段就添加这一行</span>
+- --enable-admission-plugins<span class="token operator">=</span>NodeRestriction  <span class="token comment"># 更改准入控制器</span>
+- --client-ca-file<span class="token operator">=</span>/etc/kubernetes/pki/ca.crt 
+- --enable-bootstrap-token-auth<span class="token operator">=</span>true  <span class="token comment"># 没有这行就添加</span>
+- --anonymous-auth<span class="token operator">=</span>false  <span class="token comment"># true改为fasle,禁止匿名访问，如果这个字段没有就添加</span>
+<span class="token comment"># 改完要重启下kubelet</span>
+systemctl restart kubelet
+
+<span class="token comment">##查询角色绑定并删除</span>
+kubectl get clusterrolebinding system:anonymous
+kubectl delete clusterrolebinding system:anonymous<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">miaohsukang</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://miaohsukang.gitee.io/2023/02/12/kao-shi-ren-zheng/cks-mo-ni-kao-ti/">https://miaohsukang.gitee.io/2023/02/12/kao-shi-ren-zheng/cks-mo-ni-kao-ti/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">miaohsukang</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/CKS/">
+                                    <span class="chip bg-color">CKS</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/02/12/tang-ping-de-ren-sheng/">
+                    <div class="card-image">
+                        
+                        <img src="https://tse2-mm.cn.bing.net/th/id/OIP-C.XJGZVtLyDpkmK98xbW0NagHaEK?pid=ImgDet&rs=1" class="responsive-img" alt="躺平的人生">
+                        
+                        <span class="card-title">躺平的人生</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Miaohsukang
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E4%BA%BA%E7%94%9F%E6%84%9F%E6%82%9F/">
+                        <span class="chip bg-color">人生感悟</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/02/11/kao-shi-ren-zheng/cka-mo-ni-kao-ti/">
+                    <div class="card-image">
+                        
+                        <img src="https://nwzimg.wezhan.cn/contents/sitefiles2033/10168677/images/9730499.jpg" class="responsive-img" alt="K8S-CKA模拟试题">
+                        
+                        <span class="card-title">K8S-CKA模拟试题</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%80%83%E8%AF%95%E8%AE%A4%E8%AF%81/" class="post-category">
+                                    考试认证
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CKA/">
+                        <span class="chip bg-color">CKA</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2023</span>
+            
+            <a href="/about" target="_blank">Miaohsukang</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://miaohsukang.gitee.io" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://miaohsukang.gitee.io" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:12419315+miaohsukang@user.noreply.gitee.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=258603904" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 258603904" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
