@@ -312,7 +312,7 @@
 <script src="/libs/cryptojs/crypto-js.min.js"></script>
 <script>
     (function() {
-        let pwd = 'adec5f06f4290eca5edafd9d779f48f6aa4fc83c7a50cd1644545a04aeac2a7e';
+        let pwd = '';
         if (pwd && pwd.length > 0) {
             if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
                 alert('密码错误，将返回主页！');
@@ -366,6 +366,15 @@
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/K8S%E7%AC%94%E8%AE%B0/" class="post-category">
+                                K8S笔记
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -1590,8 +1599,12 @@ demo-pod   <span class="token number">1</span>/1     Running   <span class="toke
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            miaohsukang
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/K8S%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    K8S笔记
+                                </a>
+                            
                             
                         </span>
                     </div>
